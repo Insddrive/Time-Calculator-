@@ -3,322 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ (ਰੰਗਦਾਰ ਬਾਰਡਰ)</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Gurmukhi:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ</title>
     <style>
-        html {
-            color-scheme: dark;
-        }
-        body {
-            font-family: 'Inter', 'Noto Sans Gurmukhi', sans-serif;
+        /* --- ਆਫਲਾਈਨ CSS (Tailwind ਦੀ ਨਕਲ) --- */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #0f1115; /* gray-950 equivalent */
+            --input-bg: #1f2937;
+            --input-border: #4b5563;
+            --text-white: #ffffff;
+            --text-gray: #d1d5db;
+            --text-gray-light: #9ca3af;
+            --green-primary: #4ade80; /* green-400 */
+            --green-dark: #15803d;
+            --purple-primary: #c084fc; /* purple-400 */
+            --purple-dark: #7e22ce;
+            --blue-primary: #60a5fa; /* blue-400 */
+            --blue-dark: #1d4ed8;
+            --red-error: #ef4444;
+            --red-btn: #dc2626;
+            --red-btn-hover: #b91c1c;
         }
 
-        /* ਸਾਰੇ ਡਾਰਕ ਮੋਡ ਇਨਪੁਟਸ ਲਈ ਸਾਂਝੀ ਕਲਾਸ */
-        .dark-theme-input {
-            background-color: #1f2937; /* bg-gray-800 */
-            border-color: #4b5563;     /* border-gray-600 */
-            color: #f9fafb;             /* text-gray-50 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--text-white);
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+
+        main {
             width: 100%;
-            padding: 0.75rem; /* p-3 */
-            border-radius: 0.75rem; /* rounded-xl */
-            border-width: 1px;
-            transition: border-color 0.2s, color 0.2s;
+            max-width: 42rem; /* max-w-2xl */
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* space-y-8 */
         }
-        .dark-theme-input::placeholder {
-            color: #9ca3af; /* text-gray-400 */
+
+        /* --- ਕਾਰਡ ਸਟਾਈਲ --- */
+        section {
+            background-color: var(--card-bg);
+            border-radius: 1.5rem; /* rounded-3xl */
+            padding: 1.5rem;
+            border-width: 2px;
+            border-style: solid;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }
-        .dark-theme-input:focus {
-            outline: 2px solid transparent;
-            outline-offset: 2px;
-            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+
+        /* ਬਾਰਡਰ ਰੰਗ (ਟਾਈਟਲ ਨਾਲ ਮੈਚਿੰਗ) */
+        .border-green { border-color: var(--green-primary); }
+        .border-purple { border-color: var(--purple-primary); }
+        .border-blue { border-color: var(--blue-primary); }
+        .border-white { border-color: var(--text-white); }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .text-green { color: var(--green-primary); }
+        .text-purple { color: var(--purple-primary); }
+        .text-blue { color: var(--blue-primary); }
+        .text-white { color: var(--text-white); }
+
+        /* --- ਗਰਿੱਡ ਲੇਆਉਟ --- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+
+        .grid-5 {
+            display: grid;
+            grid-template-columns: 2fr 0.5fr 1fr 1fr; /* Adjusted for compact layout */
+            gap: 0.5rem;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        /* --- ਇਨਪੁਟਸ --- */
+        label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .label-green { color: #86efac; /* green-300 */ }
+        .label-purple { color: #d8b4fe; /* purple-300 */ }
+        .label-blue { color: #93c5fd; /* blue-300 */ }
+        .label-gray { color: var(--text-gray); font-size: 0.875rem; }
+
+        input[type="text"], input[type="number"], input[type="time"] {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-white);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--text-white);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
         }
         
-        /* ਗਲਤ ਇਨਪੁਟ ਲਈ ਸਟਾਈਲ */
-        .dark-theme-input-error {
-            border-color: #ef4444; /* border-red-500 */
-            color: #ef4444;       /* text-red-500 */
+        .input-green:focus { border-color: var(--green-primary); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.3); }
+        .input-purple:focus { border-color: var(--purple-primary); box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.3); }
+        .input-blue:focus { border-color: var(--blue-primary); box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3); }
+
+        /* ਛੋਟੇ ਇਨਪੁਟ (ਸੈਕਸ਼ਨ 4) */
+        .input-compact {
+            padding: 0.5rem;
+            text-align: center;
+        }
+        .input-compact-left {
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        /* ਗਲਤੀ ਦਾ ਸਟਾਈਲ */
+        .input-error {
+            border-color: var(--red-error) !important;
+            color: var(--red-error) !important;
         }
         .warning-text {
-            color: #ef4444; /* text-red-500 */
-            font-size: 0.875rem; /* text-sm */
-            margin-top: 0.25rem; /* mt-1 */
-            height: 1.25rem; /* h-5 */
+            color: var(--red-error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            min-height: 1.25rem;
         }
 
-        /* ਸੈਕਸ਼ਨ 4 ਲਈ ਛੋਟੀ ਪੈਡਿੰਗ */
-        .dark-theme-input-compact {
-            padding: 0.5rem; /* p-2 */
+        /* --- ਬਟਨ --- */
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
         }
+        .btn:hover { opacity: 0.9; }
 
-        /* ਸਿਰਫ਼ ਟਾਈਮ ਇਨਪੁਟ ਲਈ ਖਾਸ */
-        input[type="time"].dark-theme-input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            min-height: 48px;
-        }
-        input[type="time"].dark-theme-input::-webkit-calendar-picker-indicator {
-            filter: invert(1) brightness(0.8); 
-        }
+        .btn-green { background-color: var(--green-dark); }
+        .btn-purple { background-color: var(--purple-dark); }
+        .btn-blue { background-color: var(--blue-dark); }
         
-        .date-input-wrapper {
+        .btn-reset {
+            background-color: var(--red-btn);
+            width: auto;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        .btn-reset:hover { background-color: var(--red-btn-hover); }
+
+        /* --- ਆਉਟਪੁੱਟ ਬਾਕਸ --- */
+        .output-box {
+            background-color: #111827; /* gray-900 */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        }
+        .hidden { display: none; }
+        .result-text {
+            font-family: monospace;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: #f3f4f6;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #374151;
+            margin: 0.5rem 0;
+        }
+
+        /* --- ਕਸਟਮ ਕੈਲੰਡਰ ਆਈਕਨ ਸਿਸਟਮ --- */
+        .date-wrapper {
             position: relative;
             width: 100%;
         }
-        .date-input-wrapper .dark-theme-input { 
-            padding-right: 3rem;
-        }
-        .date-input-wrapper .calendar-icon {
+        .calendar-trigger {
             position: absolute;
             right: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #9ca3af; /* text-gray-400 */
-            z-index: 1; 
-        }
-
-        /* ਡਾਰਕ ਮੋਡ ਆਉਟਪੁੱਟ ਬਾਕਸ (ਸੈਕਸ਼ਨ 1-3) */
-        .output-box {
-            background-color: #111827; /* bg-gray-900 */
-        }
-
-        /* ਰੀਸੈੱਟ ਬਟਨ ਲਾਲ ਰੰਗ ਦਾ */
-        .reset-button {
-            background-color: #dc2626; /* bg-red-600 */
-            color: #ffffff;            /* text-white */
-            font-weight: 600;          /* font-semibold */
+            color: var(--text-gray-light);
+            background: none;
             border: none;
+            padding: 0;
         }
-        .reset-button:hover {
-            background-color: #b91c1c; /* bg-red-700 */
+        /* ਇਹ ਅਸਲੀ Native Date Input ਹੈ ਜੋ ਛੁਪਿਆ ਹੋਇਆ ਹੈ ਪਰ ਆਈਕਨ ਦੇ ਉੱਪਰ ਹੈ */
+        .native-date-picker {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 3rem;
+            height: 100%;
+            opacity: 0; /* ਅਦਿੱਖ */
+            cursor: pointer;
+            z-index: 10;
         }
-        
+
+        /* ਤੀਰ ਦਾ ਨਿਸ਼ਾਨ */
+        .arrow-icon {
+            font-size: 1.875rem; /* 3xl */
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            padding-top: 0.25rem;
+        }
     </style>
 </head>
-<body class="bg-black min-h-screen flex items-center justify-center p-4">
-    <main class="w-full max-w-2xl space-y-8">
+<body>
+    <main>
         
-        <!-- ਸੈਕਸ਼ਨ 1: ਬਾਰਡਰ ਦਾ ਰੰਗ ਬਦਲਿਆ (green-400) -->
-        <section class="bg-gray-950 border-2 border-green-400 p-6 rounded-3xl shadow-lg">
-            <h2 class="text-2xl font-bold text-green-400 text-center mb-5">ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ</h2>
+        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ -->
+        <!-- ========================== -->
+        <section class="border-green">
+            <h2 class="text-green">ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="grid-2">
                 <div>
-                    <label for="s1-date1" class="block mb-1 font-semibold text-green-300">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
-                    <div class="date-input-wrapper">
-                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="dark-theme-input focus:ring-green-500" data-input> 
-                        <span class="calendar-icon" data-toggle> 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
-                        </span>
+                    <label for="s1-date1" class="label-green">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
+                    <div class="date-wrapper">
+                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="input-green" data-input> 
+                        <!-- ਆਫਲਾਈਨ ਕੈਲੰਡਰ ਟ੍ਰਿਕ -->
+                        <button class="calendar-trigger">📅</button>
+                        <input type="date" class="native-date-picker" data-target="s1-date1">
                     </div>
                     <p id="s1-date1-warning" class="warning-text"></p>
                 </div>
                 <div>
-                    <label for="s1-date2" class="block mb-1 font-semibold text-green-300">ਅੰਤਿਮ ਤਰੀਕ</label>
-                    <div class="date-input-wrapper">
-                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="dark-theme-input focus:ring-green-500" data-input>
-                        <span class="calendar-icon" data-toggle>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
-                        </span>
+                    <label for="s1-date2" class="label-green">ਅੰਤਿਮ ਤਰੀਕ</label>
+                    <div class="date-wrapper">
+                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="input-green" data-input>
+                        <button class="calendar-trigger">📅</button>
+                        <input type="date" class="native-date-picker" data-target="s1-date2">
                     </div>
                     <p id="s1-date2-warning" class="warning-text"></p>
                 </div>
             </div>
-            <button id="calc1" class="w-full p-3 rounded-xl bg-green-700 text-white font-bold hover:bg-green-600 transition">
-                ਗਣਨਾ ਕਰੋ
-            </button>
-            <div id="output-box1" class="mt-4 p-4 rounded-xl shadow-inner space-y-3 hidden output-box">
-                <p id="result1" class="text-lg font-mono text-gray-100 text-center"></p>
-                <div class="text-center">
-                    <button id="reset1" class="px-4 py-2 rounded-lg text-sm transition reset-button">
-                        ਰੀਸੈੱਟ
-                    </button>
-                </div>
+            <button id="calc1" class="btn btn-green">ਗਣਨਾ ਕਰੋ</button>
+            <div id="output-box1" class="output-box hidden">
+                <p id="result1" class="result-text"></p>
+                <button id="reset1" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
         
-        <!-- ਸੈਕਸ਼ਨ 2: ਬਾਰਡਰ ਦਾ ਰੰਗ ਬਦਲਿਆ (purple-400) -->
-        <section class="bg-gray-950 border-2 border-purple-400 p-6 rounded-3xl shadow-lg">
-            <h2 class="text-2xl font-bold text-purple-400 text-center mb-5">ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ -->
+        <!-- ========================== -->
+        <section class="border-purple">
+            <h2 class="text-purple">ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ</h2>
+            <div class="grid-2">
                 <div>
-                    <label for="s2-time1" class="block mb-1 font-semibold text-purple-300">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s2-time1" class="dark-theme-input focus:ring-purple-500" required>
+                    <label for="s2-time1" class="label-purple">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
+                    <input type="time" id="s2-time1" class="input-purple" required>
                 </div>
                 <div>
-                    <label for="s2-time2" class="block mb-1 font-semibold text-purple-300">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s2-time2" class="dark-theme-input focus:ring-purple-500" required>
+                    <label for="s2-time2" class="label-purple">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
+                    <input type="time" id="s2-time2" class="input-purple" required>
                 </div>
             </div>
-            <button id="calc2" class="w-full p-3 rounded-xl bg-purple-700 text-white font-bold hover:bg-purple-600 transition">
-                ਗਣਨਾ ਕਰੋ
-            </button>
-            <div id="output-box2" class="mt-4 p-4 rounded-xl shadow-inner space-y-3 hidden output-box">
-                <p id="result2" class="text-lg font-mono text-gray-100 text-center"></p>
-                <div class="text-center">
-                    <button id="reset2" class="px-4 py-2 rounded-lg text-sm transition reset-button">
-                        ਰੀਸੈੱਟ
-                    </button>
-                </div>
+            <button id="calc2" class="btn btn-purple">ਗਣਨਾ ਕਰੋ</button>
+            <div id="output-box2" class="output-box hidden">
+                <p id="result2" class="result-text"></p>
+                <button id="reset2" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
         
-        <!-- ਸੈਕਸ਼ਨ 3: ਬਾਰਡਰ ਦਾ ਰੰਗ ਬਦਲਿਆ (blue-400) -->
-        <section class="bg-gray-950 border-2 border-blue-400 p-6 rounded-3xl shadow-lg">
-            <h2 class="text-2xl font-bold text-blue-400 text-center mb-5">ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ -->
+        <!-- ========================== -->
+        <section class="border-blue">
+            <h2 class="text-blue">ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ</h2>
+            <div class="grid-2">
                 <div>
-                    <label for="s3-date1" class="block mb-1 font-semibold text-blue-300">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
-                    <div class="date-input-wrapper">
-                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="dark-theme-input focus:ring-blue-500" data-input>
-                        <span class="calendar-icon" data-toggle>
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
-                        </span>
+                    <label for="s3-date1" class="label-blue">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
+                    <div class="date-wrapper">
+                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="input-blue" data-input>
+                        <button class="calendar-trigger">📅</button>
+                        <input type="date" class="native-date-picker" data-target="s3-date1">
                     </div>
                     <p id="s3-date1-warning" class="warning-text"></p>
                 </div>
                 <div>
-                    <label for="s3-time1" class="block mb-1 font-semibold text-blue-300">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s3-time1" class="dark-theme-input focus:ring-blue-500" required>
+                    <label for="s3-time1" class="label-blue">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
+                    <input type="time" id="s3-time1" class="input-blue" required>
                 </div>
                 <div>
-                    <label for="s3-date2" class="block mb-1 font-semibold text-blue-300">ਅੰਤਿਮ ਤਰੀਕ</label>
-                    <div class="date-input-wrapper">
-                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="dark-theme-input focus:ring-blue-500" data-input>
-                        <span class="calendar-icon" data-toggle>
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                            </svg>
-                        </span>
+                    <label for="s3-date2" class="label-blue">ਅੰਤਿਮ ਤਰੀਕ</label>
+                    <div class="date-wrapper">
+                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="input-blue" data-input>
+                        <button class="calendar-trigger">📅</button>
+                        <input type="date" class="native-date-picker" data-target="s3-date2">
                     </div>
                     <p id="s3-date2-warning" class="warning-text"></p>
                 </div>
                 <div>
-                    <label for="s3-time2" class="block mb-1 font-semibold text-blue-300">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s3-time2" class="dark-theme-input focus:ring-blue-500" required>
+                    <label for="s3-time2" class="label-blue">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
+                    <input type="time" id="s3-time2" class="input-blue" required>
                 </div>
             </div>
-            <button id="calc3" class="w-full p-3 rounded-xl bg-blue-700 text-white font-bold hover:bg-blue-600 transition">
-                ਗਣਨਾ ਕਰੋ
-            </button>
-            <div id="output-box3" class="mt-4 p-4 rounded-xl shadow-inner space-y-3 hidden output-box">
-                <p id="result3-ymd" class="text-lg font-mono text-gray-100 text-center"></p>
-                <p id="result3-hms" class="text-lg font-mono text-gray-100 text-center"></p>
-                <hr class="my-2 border-gray-700">
-                <p id="result3-total-dhm" class="text-md font-mono text-gray-100 text-center"></p>
-                <p id="result3-total_h" class="text-md font-mono text-gray-100 text-center"></p>
-                <div class="text-center">
-                    <button id="reset3" class="px-4 py-2 rounded-lg text-sm transition reset-button">
-                        ਰੀਸੈੱਟ
-                    </button>
-                </div>
+            <button id="calc3" class="btn btn-blue">ਗਣਨਾ ਕਰੋ</button>
+            <div id="output-box3" class="output-box hidden">
+                <p id="result3-ymd" class="result-text"></p>
+                <p id="result3-hms" class="result-text"></p>
+                <hr>
+                <p id="result3-total-dhm" class="result-text" style="font-size: 1rem;"></p>
+                <p id="result3-total_h" class="result-text" style="font-size: 1rem;"></p>
+                <button id="reset3" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
 
-        
-        <section class="bg-gray-950 border-2 border-white p-6 rounded-3xl shadow-lg">
-            <h2 class="text-2xl font-bold text-white text-center mb-5">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
+        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ -->
+        <!-- ========================== -->
+        <section class="border-white">
+            <h2 class="text-white">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
             
             <!-- ਕਨਵਰਟਰ 1: ਮਿੰਟ <-> ਘੰਟੇ:ਮਿੰਟ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-4">
-                <div class="col-span-2">
-                    <label for="s4_h_m_total_minutes" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਿੰਟ</label>
-                    <input type="number" id="s4_h_m_total_minutes" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+            <div class="grid-5">
+                <div>
+                    <label for="s4_h_m_total_minutes" class="label-gray">ਕੁੱਲ ਮਿੰਟ</label>
+                    <input type="number" id="s4_h_m_total_minutes" placeholder="0" inputmode="numeric" class="input-compact-left">
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                <div class="arrow-icon">&harr;</div>
+                <div>
+                    <label for="s4_h_m_hours" class="label-gray">ਘੰਟੇ</label>
+                    <input type="number" id="s4_h_m_hours" placeholder="0" inputmode="numeric" class="input-compact">
                 </div>
-                <div class="col-span-1">
-                    <label for="s4_h_m_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਘੰਟੇ</label>
-                    <input type="number" id="s4_h_m_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
-                </div>
-                <div class="col-span-1">
-                    <label for="s4_h_m_minutes" class="block mb-1 font-semibold text-gray-300 text-sm">ਮਿੰਟ</label>
-                    <input type="number" id="s4_h_m_minutes" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
+                <div>
+                    <label for="s4_h_m_minutes" class="label-gray">ਮਿੰਟ</label>
+                    <input type="number" id="s4_h_m_minutes" placeholder="0" inputmode="numeric" class="input-compact">
                     <p id="s4_h_m_minutes-warning" class="warning-text text-center"></p>
                 </div>
             </div>
             
             <!-- ਕਨਵਰਟਰ 2: ਘੰਟੇ <-> ਦਿਨ:ਘੰਟੇ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-4">
-                <div class="col-span-2">
-                    <label for="s4_d_h_total_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਘੰਟੇ</label>
-                    <input type="number" id="s4_d_h_total_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+            <div class="grid-5">
+                <div>
+                    <label for="s4_d_h_total_hours" class="label-gray">ਕੁੱਲ ਘੰਟੇ</label>
+                    <input type="number" id="s4_d_h_total_hours" placeholder="0" inputmode="numeric" class="input-compact-left">
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                <div class="arrow-icon">&harr;</div>
+                <div>
+                    <label for="s4_d_h_days" class="label-gray">ਦਿਨ</label>
+                    <input type="number" id="s4_d_h_days" placeholder="0" inputmode="numeric" class="input-compact">
                 </div>
-                <div class="col-span-1">
-                    <label for="s4_d_h_days" class="block mb-1 font-semibold text-gray-300 text-sm">ਦਿਨ</label>
-                    <input type="number" id="s4_d_h_days" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
-                </div>
-                <div class="col-span-1">
-                    <label for="s4_d_h_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਘੰਟੇ</label>
-                    <input type="number" id="s4_d_h_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
+                <div>
+                    <label for="s4_d_h_hours" class="label-gray">ਘੰਟੇ</label>
+                    <input type="number" id="s4_d_h_hours" placeholder="0" inputmode="numeric" class="input-compact">
                     <p id="s4_d_h_hours-warning" class="warning-text text-center"></p>
                 </div>
             </div>
 
             <!-- ਕਨਵਰਟਰ 3: ਹਫਤੇ <-> ਮਹੀਨੇ:ਹਫਤੇ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-4">
-                <div class="col-span-2">
-                    <label for="s4_m_w_total_weeks" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਹਫਤੇ</label>
-                    <input type="number" id="s4_m_w_total_weeks" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+            <div class="grid-5">
+                <div>
+                    <label for="s4_m_w_total_weeks" class="label-gray">ਕੁੱਲ ਹਫਤੇ</label>
+                    <input type="number" id="s4_m_w_total_weeks" placeholder="0" inputmode="numeric" class="input-compact-left">
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                <div class="arrow-icon">&harr;</div>
+                <div>
+                    <label for="s4_m_w_months" class="label-gray">ਮਹੀਨੇ</label>
+                    <input type="number" id="s4_m_w_months" placeholder="0" inputmode="numeric" class="input-compact">
                 </div>
-                <div class="col-span-1">
-                    <label for="s4_m_w_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_m_w_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
-                </div>
-                <div class="col-span-1">
-                    <label for="s4_m_w_weeks" class="block mb-1 font-semibold text-gray-300 text-sm">ਹਫਤੇ</label>
-                    <input type="number" id="s4_m_w_weeks" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
+                <div>
+                    <label for="s4_m_w_weeks" class="label-gray">ਹਫਤੇ</label>
+                    <input type="number" id="s4_m_w_weeks" placeholder="0" inputmode="numeric" class="input-compact">
                     <p id="s4_m_w_weeks-warning" class="warning-text text-center"></p>
                 </div>
             </div>
 
             <!-- ਕਨਵਰਟਰ 4: ਮਹੀਨੇ <-> ਸਾਲ:ਮਹੀਨੇ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-6">
-                <div class="col-span-2">
-                    <label for="s4_y_m_total_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_y_m_total_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+            <div class="grid-5">
+                <div>
+                    <label for="s4_y_m_total_months" class="label-gray">ਕੁੱਲ ਮਹੀਨੇ</label>
+                    <input type="number" id="s4_y_m_total_months" placeholder="0" inputmode="numeric" class="input-compact-left">
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                <div class="arrow-icon">&harr;</div>
+                <div>
+                    <label for="s4_y_m_years" class="label-gray">ਸਾਲ</label>
+                    <input type="number" id="s4_y_m_years" placeholder="0" inputmode="numeric" class="input-compact">
                 </div>
-                <div class="col-span-1">
-                    <label for="s4_y_m_years" class="block mb-1 font-semibold text-gray-300 text-sm">ਸਾਲ</label>
-                    <input type="number" id="s4_y_m_years" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
-                </div>
-                <div class="col-span-1">
-                    <label for="s4_y_m_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_y_m_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
+                <div>
+                    <label for="s4_y_m_months" class="label-gray">ਮਹੀਨੇ</label>
+                    <input type="number" id="s4_y_m_months" placeholder="0" inputmode="numeric" class="input-compact">
                     <p id="s4_y_m_months-warning" class="warning-text text-center"></p>
                 </div>
             </div>
 
-            <div class="text-center">
-                <button id="reset4" class="px-4 py-2 rounded-lg text-sm transition reset-button">
-                    ਰੀਸੈੱਟ
-                </button>
+            <div style="text-align: center;">
+                <button id="reset4" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
 
@@ -326,14 +428,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- ਸੈਕਸ਼ਨ 1-3 ਲਈ Flatpickr ---
-            document.querySelectorAll('.date-input-wrapper').forEach(wrapper => {
-                flatpickr(wrapper, {
-                    wrap: true,             
-                    allowInput: true,       
-                    disableMobile: true,    
-                    dateFormat: "d-m-Y",    
-                    clickOpens: false       
+            // --- ਨੇਟਿਵ ਕੈਲੰਡਰ ਹੈਂਡਲਰ (Offline Alternative to Flatpickr) ---
+            document.querySelectorAll('.native-date-picker').forEach(picker => {
+                picker.addEventListener('change', (e) => {
+                    const targetId = e.target.getAttribute('data-target');
+                    const textInput = document.getElementById(targetId);
+                    // YYYY-MM-DD ਨੂੰ DD-MM-YYYY ਵਿੱਚ ਬਦਲੋ
+                    const parts = e.target.value.split('-');
+                    if (parts.length === 3) {
+                        textInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        // Trigger input event for validation
+                        textInput.dispatchEvent(new Event('input'));
+                    }
                 });
             });
 
@@ -555,10 +661,10 @@
                 let minutes = parseInt(s4_h_m_minutes.value) || 0;
                 
                 if (minutes > 60) {
-                    s4_h_m_minutes.classList.add('dark-theme-input-error');
+                    s4_h_m_minutes.classList.add('input-error');
                     s4_h_m_minutes_warning.textContent = "ਮਿੰਟ 60 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
                 } else {
-                    s4_h_m_minutes.classList.remove('dark-theme-input-error');
+                    s4_h_m_minutes.classList.remove('input-error');
                     s4_h_m_minutes_warning.textContent = "";
                 }
 
@@ -571,7 +677,7 @@
                 if (isUpdating) return;
                 isUpdating = true;
                 
-                s4_h_m_minutes.classList.remove('dark-theme-input-error');
+                s4_h_m_minutes.classList.remove('input-error');
                 s4_h_m_minutes_warning.textContent = "";
 
                 const totalMinutes = parseInt(s4_h_m_total_minutes.value) || 0;
@@ -596,10 +702,10 @@
                 let hours = parseInt(s4_d_h_hours.value) || 0;
 
                 if (hours > 23) { 
-                    s4_d_h_hours.classList.add('dark-theme-input-error');
+                    s4_d_h_hours.classList.add('input-error');
                     s4_d_h_hours_warning.textContent = "ਘੰਟੇ 23 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
                 } else {
-                    s4_d_h_hours.classList.remove('dark-theme-input-error');
+                    s4_d_h_hours.classList.remove('input-error');
                     s4_d_h_hours_warning.textContent = "";
                 }
 
@@ -612,7 +718,7 @@
                 if (isUpdating) return;
                 isUpdating = true;
                 
-                s4_d_h_hours.classList.remove('dark-theme-input-error');
+                s4_d_h_hours.classList.remove('input-error');
                 s4_d_h_hours_warning.textContent = "";
 
                 const totalHours = parseInt(s4_d_h_total_hours.value) || 0;
@@ -637,10 +743,10 @@
                 let weeks = parseInt(s4_m_w_weeks.value) || 0;
 
                 if (weeks > 4) {
-                    s4_m_w_weeks.classList.add('dark-theme-input-error');
+                    s4_m_w_weeks.classList.add('input-error');
                     s4_m_w_weeks_warning.textContent = "ਹਫਤੇ 4 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
                 } else {
-                    s4_m_w_weeks.classList.remove('dark-theme-input-error');
+                    s4_m_w_weeks.classList.remove('input-error');
                     s4_m_w_weeks_warning.textContent = "";
                 }
                 
@@ -654,7 +760,7 @@
                 if (isUpdating) return;
                 isUpdating = true;
                 
-                s4_m_w_weeks.classList.remove('dark-theme-input-error');
+                s4_m_w_weeks.classList.remove('input-error');
                 s4_m_w_weeks_warning.textContent = "";
 
                 const totalWeeks = parseInt(s4_m_w_total_weeks.value) || 0;
@@ -679,10 +785,10 @@
                 let months = parseInt(s4_y_m_months.value) || 0;
 
                 if (months > 12) {
-                    s4_y_m_months.classList.add('dark-theme-input-error');
+                    s4_y_m_months.classList.add('input-error');
                     s4_y_m_months_warning.textContent = "ਮਹੀਨੇ 12 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
                 } else {
-                    s4_y_m_months.classList.remove('dark-theme-input-error');
+                    s4_y_m_months.classList.remove('input-error');
                     s4_y_m_months_warning.textContent = "";
                 }
                 
@@ -695,7 +801,7 @@
                 if (isUpdating) return;
                 isUpdating = true;
                 
-                s4_y_m_months.classList.remove('dark-theme-input-error');
+                s4_y_m_months.classList.remove('input-error');
                 s4_y_m_months_warning.textContent = "";
 
                 const totalMonths = parseInt(s4_y_m_total_months.value) || 0;
@@ -720,13 +826,13 @@
                 s4_y_m_years.value = ''; s4_y_m_months.value = ''; s4_y_m_total_months.value = '';
                 
                 // ਵਾਰਨਿੰਗਾਂ ਵੀ ਰੀਸੈੱਟ ਕਰੋ
-                s4_h_m_minutes.classList.remove('dark-theme-input-error');
+                s4_h_m_minutes.classList.remove('input-error');
                 s4_h_m_minutes_warning.textContent = "";
-                s4_d_h_hours.classList.remove('dark-theme-input-error');
+                s4_d_h_hours.classList.remove('input-error');
                 s4_d_h_hours_warning.textContent = "";
-                s4_m_w_weeks.classList.remove('dark-theme-input-error');
+                s4_m_w_weeks.classList.remove('input-error');
                 s4_m_w_weeks_warning.textContent = "";
-                s4_y_m_months.classList.remove('dark-theme-input-error');
+                s4_y_m_months.classList.remove('input-error');
                 s4_y_m_months_warning.textContent = "";
                 
                 isUpdating = false; 
