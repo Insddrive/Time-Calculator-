@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ (ਅੰਤਿਮ ਬਦਲਾਅ)</title>
+    <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ (ਵੱਡਾ ਤੀਰ)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -182,7 +182,7 @@
                     <div class="date-input-wrapper">
                         <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="dark-theme-input focus:ring-blue-500" data-input>
                         <span class="calendar-icon" data-toggle>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                             </svg>
                         </span>
@@ -227,13 +227,22 @@
             </div>
         </section>
 
-        <!-- [ਬਦਲਿਆ] ਸੈਕਸ਼ਨ 4: ਆਊਟਲਾਈਨ ਸਫੇਦ -->
-        <section class="bg-gray-950 border-2 border-white p-6 rounded-3xl shadow-lg">
-            
+        
+
+<section class="bg-gray-950 border-2 border-white p-6 rounded-3xl shadow-lg">
             <h2 class="text-2xl font-bold text-white text-center mb-5">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
             
-            <!-- ਘੰਟੇ <-> ਮਿੰਟ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-4">
+            
+
+<div class="grid grid-cols-5 gap-2 items-start mb-4">
+                <div class="col-span-2">
+                    <label for="s4_h_m_total_minutes" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਿੰਟ</label>
+                    <input type="number" id="s4_h_m_total_minutes" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+                </div>
+                <!-- [ਬਦਲਿਆ] text-2xl ਤੋਂ text-3xl -->
+                <div class="col-span-1 text-center pt-8">
+                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                </div>
                 <div class="col-span-1">
                     <label for="s4_h_m_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਘੰਟੇ</label>
                     <input type="number" id="s4_h_m_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
@@ -243,17 +252,19 @@
                     <input type="number" id="s4_h_m_minutes" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
                     <p id="s4_h_m_minutes-warning" class="warning-text text-center"></p>
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-2xl font-semibold text-gray-500">=</span>
-                </div>
-                <div class="col-span-2">
-                    <label for="s4_h_m_total_minutes" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਿੰਟ</label>
-                    <input type="number" id="s4_h_m_total_minutes" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
-                </div>
             </div>
             
-            <!-- ਦਿਨ <-> ਘੰਟੇ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-4">
+            
+
+<div class="grid grid-cols-5 gap-2 items-start mb-4">
+                <div class="col-span-2">
+                    <label for="s4_d_h_total_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਘੰਟੇ</label>
+                    <input type="number" id="s4_d_h_total_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+                </div>
+                <!-- [ਬਦਲਿਆ] text-2xl ਤੋਂ text-3xl -->
+                <div class="col-span-1 text-center pt-8">
+                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                </div>
                 <div class="col-span-1">
                     <label for="s4_d_h_days" class="block mb-1 font-semibold text-gray-300 text-sm">ਦਿਨ</label>
                     <input type="number" id="s4_d_h_days" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
@@ -263,17 +274,19 @@
                     <input type="number" id="s4_d_h_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
                     <p id="s4_d_h_hours-warning" class="warning-text text-center"></p>
                 </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-2xl font-semibold text-gray-500">=</span>
-                </div>
-                <div class="col-span-2">
-                    <label for="s4_d_h_total_hours" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਘੰਟੇ</label>
-                    <input type="number" id="s4_d_h_total_hours" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
-                </div>
             </div>
 
-            <!-- ਸਾਲ <-> ਮਹੀਨੇ -->
-            <div class="grid grid-cols-5 gap-2 items-start mb-6">
+            
+
+<div class="grid grid-cols-5 gap-2 items-start mb-6">
+                <div class="col-span-2">
+                    <label for="s4_y_m_total_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਹੀਨੇ</label>
+                    <input type="number" id="s4_y_m_total_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
+                </div>
+                <!-- [ਬਦਲਿਆ] text-2xl ਤੋਂ text-3xl -->
+                <div class="col-span-1 text-center pt-8">
+                    <span class="text-3xl font-semibold text-gray-500" title="ਦੋ-ਪਾਸੜ ਕਨਵਰਟਰ">&harr;</span>
+                </div>
                 <div class="col-span-1">
                     <label for="s4_y_m_years" class="block mb-1 font-semibold text-gray-300 text-sm">ਸਾਲ</label>
                     <input type="number" id="s4_y_m_years" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
@@ -282,13 +295,6 @@
                     <label for="s4_y_m_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਮਹੀਨੇ</label>
                     <input type="number" id="s4_y_m_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400 text-center">
                     <p id="s4_y_m_months-warning" class="warning-text text-center"></p>
-                </div>
-                <div class="col-span-1 text-center pt-8">
-                    <span class="text-2xl font-semibold text-gray-500">=</span>
-                </div>
-                <div class="col-span-2">
-                    <label for="s4_y_m_total_months" class="block mb-1 font-semibold text-gray-300 text-sm">ਕੁੱਲ ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_y_m_total_months" placeholder="0" inputmode="numeric" class="dark-theme-input dark-theme-input-compact focus:ring-gray-400">
                 </div>
             </div>
 
@@ -566,7 +572,6 @@
                 let days = parseInt(s4_d_h_days.value) || 0;
                 let hours = parseInt(s4_d_h_hours.value) || 0;
 
-                // [ਬਦਲਿਆ] ਲਿਮਿਟ 12 ਤੋਂ 23 ਕਰ ਦਿੱਤੀ
                 if (hours > 23) { 
                     s4_d_h_hours.classList.add('dark-theme-input-error');
                     s4_d_h_hours_warning.textContent = "ਘੰਟੇ 23 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
@@ -663,5 +668,4 @@
     </script>
 </body>
 </html>
-
 
