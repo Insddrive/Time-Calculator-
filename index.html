@@ -1,35 +1,40 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ</title>
+    
+    <!-- PWA ਸੈਟਿੰਗਾਂ -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+
     <style>
-        /* --- ਆਫਲਾਈਨ CSS (Tailwind ਦੀ ਨਕਲ) --- */
+        /* --- ਆਫਲਾਈਨ CSS --- */
         :root {
             --bg-color: #000000;
-            --card-bg: #0f1115; /* gray-950 equivalent */
+            --card-bg: #0f1115; 
             --input-bg: #1f2937;
             --input-border: #4b5563;
             --text-white: #ffffff;
             --text-gray: #d1d5db;
             --text-gray-light: #9ca3af;
-            --green-primary: #4ade80; /* green-400 */
+            --green-primary: #4ade80; 
             --green-dark: #15803d;
-            --purple-primary: #c084fc; /* purple-400 */
+            --purple-primary: #c084fc; 
             --purple-dark: #7e22ce;
-            --blue-primary: #60a5fa; /* blue-400 */
+            --blue-primary: #60a5fa; 
             --blue-dark: #1d4ed8;
             --red-error: #ef4444;
             --red-btn: #dc2626;
             --red-btn-hover: #b91c1c;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
 
         body {
             background-color: var(--bg-color);
@@ -41,29 +46,31 @@
             min-height: 100vh;
         }
 
+
         main {
             width: 100%;
-            max-width: 42rem; /* max-w-2xl */
+            max-width: 42rem; 
             display: flex;
             flex-direction: column;
-            gap: 2rem; /* space-y-8 */
+            gap: 2rem; 
         }
 
-        /* --- ਕਾਰਡ ਸਟਾਈਲ --- */
+
         section {
             background-color: var(--card-bg);
-            border-radius: 1.5rem; /* rounded-3xl */
+            border-radius: 1.5rem;
             padding: 1.5rem;
             border-width: 2px;
             border-style: solid;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
         }
 
-        /* ਬਾਰਡਰ ਰੰਗ (ਟਾਈਟਲ ਨਾਲ ਮੈਚਿੰਗ) */
+
         .border-green { border-color: var(--green-primary); }
         .border-purple { border-color: var(--purple-primary); }
         .border-blue { border-color: var(--blue-primary); }
         .border-white { border-color: var(--text-white); }
+
 
         h2 {
             font-size: 1.5rem;
@@ -72,41 +79,42 @@
             margin-bottom: 1.25rem;
         }
 
+
         .text-green { color: var(--green-primary); }
         .text-purple { color: var(--purple-primary); }
         .text-blue { color: var(--blue-primary); }
         .text-white { color: var(--text-white); }
 
-        /* --- ਗਰਿੱਡ ਲੇਆਉਟ --- */
+
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-        @media (min-width: 768px) {
-            .grid-2 { grid-template-columns: 1fr 1fr; }
-        }
+        @media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
 
         .grid-5 {
             display: grid;
-            grid-template-columns: 2fr 0.5fr 1fr 1fr; /* Adjusted for compact layout */
+            grid-template-columns: 2fr 0.5fr 1fr 1fr;
             gap: 0.5rem;
             align-items: start;
             margin-bottom: 1rem;
         }
 
-        /* --- ਇਨਪੁਟਸ --- */
+
         label {
             display: block;
             margin-bottom: 0.25rem;
             font-weight: 600;
             font-size: 1rem;
         }
-        .label-green { color: #86efac; /* green-300 */ }
-        .label-purple { color: #d8b4fe; /* purple-300 */ }
-        .label-blue { color: #93c5fd; /* blue-300 */ }
+        .label-green { color: #86efac; }
+        .label-purple { color: #d8b4fe; }
+        .label-blue { color: #93c5fd; }
         .label-gray { color: var(--text-gray); font-size: 0.875rem; }
+
 
         input[type="text"], input[type="number"], input[type="time"] {
             width: 100%;
@@ -119,6 +127,7 @@
             transition: border-color 0.2s;
         }
 
+
         input:focus {
             outline: none;
             border-color: var(--text-white);
@@ -129,130 +138,65 @@
         .input-purple:focus { border-color: var(--purple-primary); box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.3); }
         .input-blue:focus { border-color: var(--blue-primary); box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3); }
 
-        /* ਛੋਟੇ ਇਨਪੁਟ (ਸੈਕਸ਼ਨ 4) */
-        .input-compact {
-            padding: 0.5rem;
-            text-align: center;
-        }
-        .input-compact-left {
-            padding: 0.5rem;
-            text-align: left;
-        }
 
-        /* ਗਲਤੀ ਦਾ ਸਟਾਈਲ */
-        .input-error {
-            border-color: var(--red-error) !important;
-            color: var(--red-error) !important;
-        }
-        .warning-text {
-            color: var(--red-error);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            min-height: 1.25rem;
-        }
+        .input-compact { padding: 0.5rem; text-align: center; }
+        .input-compact-left { padding: 0.5rem; text-align: left; }
 
-        /* --- ਬਟਨ --- */
+
+        .input-error { border-color: var(--red-error) !important; color: var(--red-error) !important; }
+        .warning-text { color: var(--red-error); font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem; }
+
+
         .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: opacity 0.2s;
+            width: 100%; padding: 0.75rem; border-radius: 0.75rem; font-weight: 700; color: white;
+            border: none; cursor: pointer; font-size: 1rem; transition: opacity 0.2s;
         }
         .btn:hover { opacity: 0.9; }
+
 
         .btn-green { background-color: var(--green-dark); }
         .btn-purple { background-color: var(--purple-dark); }
         .btn-blue { background-color: var(--blue-dark); }
         
         .btn-reset {
-            background-color: var(--red-btn);
-            width: auto;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            margin-top: 1rem;
+            background-color: var(--red-btn); width: auto; padding: 0.5rem 1rem;
+            font-size: 0.875rem; margin-top: 1rem;
         }
         .btn-reset:hover { background-color: var(--red-btn-hover); }
 
-        /* --- ਆਉਟਪੁੱਟ ਬਾਕਸ --- */
+
         .output-box {
-            background-color: #111827; /* gray-900 */
-            padding: 1rem;
-            border-radius: 0.75rem;
-            margin-top: 1rem;
-            text-align: center;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+            background-color: #111827; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;
+            text-align: center; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
         }
         .hidden { display: none; }
         .result-text {
-            font-family: monospace;
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-            color: #f3f4f6;
+            font-family: monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #f3f4f6;
         }
-        hr {
-            border: 0;
-            border-top: 1px solid #374151;
-            margin: 0.5rem 0;
-        }
+        hr { border: 0; border-top: 1px solid #374151; margin: 0.5rem 0; }
 
-        /* --- ਕਸਟਮ ਕੈਲੰਡਰ ਆਈਕਨ ਸਿਸਟਮ --- */
-        .date-wrapper {
-            position: relative;
-            width: 100%;
-        }
+
+        .date-wrapper { position: relative; width: 100%; }
         .calendar-trigger {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--text-gray-light);
-            background: none;
-            border: none;
-            padding: 0;
+            position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: var(--text-gray-light); background: none; border: none; padding: 0; font-size: 1.2rem;
         }
-        /* ਇਹ ਅਸਲੀ Native Date Input ਹੈ ਜੋ ਛੁਪਿਆ ਹੋਇਆ ਹੈ ਪਰ ਆਈਕਨ ਦੇ ਉੱਪਰ ਹੈ */
         .native-date-picker {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 3rem;
-            height: 100%;
-            opacity: 0; /* ਅਦਿੱਖ */
-            cursor: pointer;
-            z-index: 10;
+            position: absolute; right: 0; top: 0; width: 3rem; height: 100%; opacity: 0; cursor: pointer; z-index: 10;
         }
-
-        /* ਤੀਰ ਦਾ ਨਿਸ਼ਾਨ */
-        .arrow-icon {
-            font-size: 1.875rem; /* 3xl */
-            font-weight: 600;
-            color: #6b7280;
-            text-align: center;
-            padding-top: 0.25rem;
-        }
+        .arrow-icon { font-size: 1.875rem; font-weight: 600; color: #6b7280; text-align: center; padding-top: 0.25rem; }
     </style>
 </head>
 <body>
     <main>
-        
-        <!-- ========================== -->
-        <!-- ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ -->
-        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 1 -->
         <section class="border-green">
             <h2 class="text-green">ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ</h2>
-            
             <div class="grid-2">
                 <div>
                     <label for="s1-date1" class="label-green">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
                     <div class="date-wrapper">
                         <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="input-green" data-input> 
-                        <!-- ਆਫਲਾਈਨ ਕੈਲੰਡਰ ਟ੍ਰਿਕ -->
                         <button class="calendar-trigger">📅</button>
                         <input type="date" class="native-date-picker" data-target="s1-date1">
                     </div>
@@ -275,9 +219,7 @@
             </div>
         </section>
         
-        <!-- ========================== -->
-        <!-- ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ -->
-        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 2 -->
         <section class="border-purple">
             <h2 class="text-purple">ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ</h2>
             <div class="grid-2">
@@ -297,9 +239,7 @@
             </div>
         </section>
         
-        <!-- ========================== -->
-        <!-- ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ -->
-        <!-- ========================== -->
+        <!-- ਸੈਕਸ਼ਨ 3 -->
         <section class="border-blue">
             <h2 class="text-blue">ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ</h2>
             <div class="grid-2">
@@ -341,13 +281,12 @@
             </div>
         </section>
 
-        <!-- ========================== -->
-        <!-- ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ -->
-        <!-- ========================== -->
+
+        <!-- ਸੈਕਸ਼ਨ 4 -->
         <section class="border-white">
             <h2 class="text-white">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
             
-            <!-- ਕਨਵਰਟਰ 1: ਮਿੰਟ <-> ਘੰਟੇ:ਮਿੰਟ -->
+            <!-- ਮਿੰਟ <-> ਘੰਟੇ:ਮਿੰਟ -->
             <div class="grid-5">
                 <div>
                     <label for="s4_h_m_total_minutes" class="label-gray">ਕੁੱਲ ਮਿੰਟ</label>
@@ -365,7 +304,7 @@
                 </div>
             </div>
             
-            <!-- ਕਨਵਰਟਰ 2: ਘੰਟੇ <-> ਦਿਨ:ਘੰਟੇ -->
+            <!-- ਘੰਟੇ <-> ਦਿਨ:ਘੰਟੇ -->
             <div class="grid-5">
                 <div>
                     <label for="s4_d_h_total_hours" class="label-gray">ਕੁੱਲ ਘੰਟੇ</label>
@@ -383,7 +322,8 @@
                 </div>
             </div>
 
-            <!-- ਕਨਵਰਟਰ 3: ਹਫਤੇ <-> ਮਹੀਨੇ:ਹਫਤੇ -->
+
+            <!-- ਹਫਤੇ <-> ਮਹੀਨੇ:ਹਫਤੇ -->
             <div class="grid-5">
                 <div>
                     <label for="s4_m_w_total_weeks" class="label-gray">ਕੁੱਲ ਹਫਤੇ</label>
@@ -401,7 +341,8 @@
                 </div>
             </div>
 
-            <!-- ਕਨਵਰਟਰ 4: ਮਹੀਨੇ <-> ਸਾਲ:ਮਹੀਨੇ -->
+
+            <!-- ਮਹੀਨੇ <-> ਸਾਲ:ਮਹੀਨੇ -->
             <div class="grid-5">
                 <div>
                     <label for="s4_y_m_total_months" class="label-gray">ਕੁੱਲ ਮਹੀਨੇ</label>
@@ -419,31 +360,39 @@
                 </div>
             </div>
 
+
             <div style="text-align: center;">
                 <button id="reset4" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
-
     </main>
+
+
     <script>
+        // --- PWA ਰਜਿਸਟ੍ਰੇਸ਼ਨ ---
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('SW registered', reg))
+                .catch(err => console.log('SW failed', err));
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- ਨੇਟਿਵ ਕੈਲੰਡਰ ਹੈਂਡਲਰ (Offline Alternative to Flatpickr) ---
+            // ਮਿਤੀ ਪਿਕਰ (Native)
             document.querySelectorAll('.native-date-picker').forEach(picker => {
                 picker.addEventListener('change', (e) => {
                     const targetId = e.target.getAttribute('data-target');
                     const textInput = document.getElementById(targetId);
-                    // YYYY-MM-DD ਨੂੰ DD-MM-YYYY ਵਿੱਚ ਬਦਲੋ
                     const parts = e.target.value.split('-');
                     if (parts.length === 3) {
                         textInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                        // Trigger input event for validation
                         textInput.dispatchEvent(new Event('input'));
                     }
                 });
             });
 
-            // --- ਸੈਕਸ਼ਨ 1-3 ਲਈ ਇਨਪੁਟ ਵੈਲੀਡੇਸ਼ਨ ---
+
+            // ਇਨਪੁਟ ਵੈਲੀਡੇਸ਼ਨ
             document.querySelectorAll('input[data-input]').forEach(input => {
                 input.addEventListener('input', (e) => {
                     if (!e.isTrusted) return; 
@@ -486,7 +435,8 @@
                 });
             });
 
-            // --- Helper Functions (Date/Time Parsing) ---
+
+            // ਗਣਨਾ ਫੰਕਸ਼ਨ
             function parseDate(dateStr) {
                 if (!dateStr || dateStr.length < 10) return null; 
                 const parts = dateStr.split('-');
@@ -512,7 +462,6 @@
                 return new Date(year, month + 1, 0).getDate();
             }
             
-            // --- ਸੈਕਸ਼ਨ 1-3: UI ਤੱਤ ਅਤੇ ਈਵੈਂਟ ਲਿਸਨਰ ---
             const s1_date1 = document.getElementById('s1-date1'), s1_date2 = document.getElementById('s1-date2');
             const calc1_btn = document.getElementById('calc1'), result1 = document.getElementById('result1');
             const output_box1 = document.getElementById('output-box1'), reset1_btn = document.getElementById('reset1');
@@ -526,7 +475,6 @@
             const result3_total_dhm = document.getElementById('result3-total-dhm'), result3_total_h = document.getElementById('result3-total_h');
             const reset3_btn = document.getElementById('reset3');
             
-            // ਸੈਕਸ਼ਨ 1: ਗਣਨਾ
             calc1_btn.addEventListener('click', () => {
                 document.getElementById('s1-date1-warning').textContent = '';
                 document.getElementById('s1-date2-warning').textContent = '';
@@ -551,7 +499,6 @@
                 document.getElementById('s1-date2-warning').textContent = '';
             });
             
-            // ਸੈਕਸ਼ਨ 2: ਗਣਨਾ
             calc2_btn.addEventListener('click', () => {
                 const t1 = parseTime(s2_time1.value), t2 = parseTime(s2_time2.value);
                 if (!t1 || !t2) {
@@ -572,7 +519,6 @@
                 result2.textContent = ''; output_box2.classList.add('hidden');
             });
             
-            // ਸੈਕਸ਼ਨ 3: ਗਣਨਾ
             calc3_btn.addEventListener('click', () => {
                 document.getElementById('s3-date1-warning').textContent = '';
                 document.getElementById('s3-date2-warning').textContent = '';
@@ -622,202 +568,111 @@
                 document.getElementById('s3-date2-warning').textContent = '';
             });
 
-            // --- ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ (ਨਵੀਂ ਵਾਰਨਿੰਗ ਲਾਜਿਕ) ---
 
+            // ਸੈਕਸ਼ਨ 4 ਕਨਵਰਟਰ
             let isUpdating = false;
-
-            // ਤੱਤ (H/M)
             const s4_h_m_hours = document.getElementById('s4_h_m_hours');
             const s4_h_m_minutes = document.getElementById('s4_h_m_minutes');
             const s4_h_m_total_minutes = document.getElementById('s4_h_m_total_minutes');
             const s4_h_m_minutes_warning = document.getElementById('s4_h_m_minutes-warning');
-
-            // ਤੱਤ (D/H)
             const s4_d_h_days = document.getElementById('s4_d_h_days');
             const s4_d_h_hours = document.getElementById('s4_d_h_hours');
             const s4_d_h_total_hours = document.getElementById('s4_d_h_total_hours');
             const s4_d_h_hours_warning = document.getElementById('s4_d_h_hours-warning');
-            
-            // ਤੱਤ (M/W) - ਨਵਾਂ
             const s4_m_w_months = document.getElementById('s4_m_w_months');
             const s4_m_w_weeks = document.getElementById('s4_m_w_weeks');
             const s4_m_w_total_weeks = document.getElementById('s4_m_w_total_weeks');
             const s4_m_w_weeks_warning = document.getElementById('s4_m_w_weeks-warning');
-
-            // ਤੱਤ (Y/M)
             const s4_y_m_years = document.getElementById('s4_y_m_years');
             const s4_y_m_months = document.getElementById('s4_y_m_months');
             const s4_y_m_total_months = document.getElementById('s4_y_m_total_months');
             const s4_y_m_months_warning = document.getElementById('s4_y_m_months-warning');
-
             const reset4_btn = document.getElementById('reset4');
             
-            // 1. ਘੰਟੇ <-> ਮਿੰਟ ਲਾਜਿਕ
             function updateHMFromCompound() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                let hours = parseInt(s4_h_m_hours.value) || 0;
-                let minutes = parseInt(s4_h_m_minutes.value) || 0;
-                
-                if (minutes > 60) {
-                    s4_h_m_minutes.classList.add('input-error');
-                    s4_h_m_minutes_warning.textContent = "ਮਿੰਟ 60 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
-                } else {
-                    s4_h_m_minutes.classList.remove('input-error');
-                    s4_h_m_minutes_warning.textContent = "";
-                }
-
-                if (document.activeElement !== s4_h_m_total_minutes) {
-                    s4_h_m_total_minutes.value = (hours * 60) + minutes;
-                }
+                if (isUpdating) return; isUpdating = true;
+                let hours = parseInt(s4_h_m_hours.value) || 0, minutes = parseInt(s4_h_m_minutes.value) || 0;
+                if (minutes > 60) { s4_h_m_minutes.classList.add('input-error'); s4_h_m_minutes_warning.textContent = "ਮਿੰਟ 60 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
+                else { s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = ""; }
+                if (document.activeElement !== s4_h_m_total_minutes) { s4_h_m_total_minutes.value = (hours * 60) + minutes; }
                 isUpdating = false;
             }
             function updateHMFromTotal() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                s4_h_m_minutes.classList.remove('input-error');
-                s4_h_m_minutes_warning.textContent = "";
-
+                if (isUpdating) return; isUpdating = true;
+                s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = "";
                 const totalMinutes = parseInt(s4_h_m_total_minutes.value) || 0;
-                if (document.activeElement !== s4_h_m_hours) {
-                    s4_h_m_hours.value = Math.floor(totalMinutes / 60);
-                }
-                if (document.activeElement !== s4_h_m_minutes) {
-                    s4_h_m_minutes.value = totalMinutes % 60;
-                }
+                if (document.activeElement !== s4_h_m_hours) { s4_h_m_hours.value = Math.floor(totalMinutes / 60); }
+                if (document.activeElement !== s4_h_m_minutes) { s4_h_m_minutes.value = totalMinutes % 60; }
                 isUpdating = false;
             }
             s4_h_m_hours.addEventListener('input', updateHMFromCompound);
             s4_h_m_minutes.addEventListener('input', updateHMFromCompound);
             s4_h_m_total_minutes.addEventListener('input', updateHMFromTotal);
 
-            // 2. ਦਿਨ <-> ਘੰਟੇ ਲਾਜਿਕ
+
             function updateDHFromCompound() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                let days = parseInt(s4_d_h_days.value) || 0;
-                let hours = parseInt(s4_d_h_hours.value) || 0;
-
-                if (hours > 23) { 
-                    s4_d_h_hours.classList.add('input-error');
-                    s4_d_h_hours_warning.textContent = "ਘੰਟੇ 23 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
-                } else {
-                    s4_d_h_hours.classList.remove('input-error');
-                    s4_d_h_hours_warning.textContent = "";
-                }
-
-                if (document.activeElement !== s4_d_h_total_hours) {
-                    s4_d_h_total_hours.value = (days * 24) + hours; 
-                }
+                if (isUpdating) return; isUpdating = true;
+                let days = parseInt(s4_d_h_days.value) || 0, hours = parseInt(s4_d_h_hours.value) || 0;
+                if (hours > 23) { s4_d_h_hours.classList.add('input-error'); s4_d_h_hours_warning.textContent = "ਘੰਟੇ 23 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
+                else { s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = ""; }
+                if (document.activeElement !== s4_d_h_total_hours) { s4_d_h_total_hours.value = (days * 24) + hours; }
                 isUpdating = false;
             }
             function updateDHFromTotal() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                s4_d_h_hours.classList.remove('input-error');
-                s4_d_h_hours_warning.textContent = "";
-
+                if (isUpdating) return; isUpdating = true;
+                s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = "";
                 const totalHours = parseInt(s4_d_h_total_hours.value) || 0;
-                if (document.activeElement !== s4_d_h_days) {
-                    s4_d_h_days.value = Math.floor(totalHours / 24);
-                }
-                if (document.activeElement !== s4_d_h_hours) {
-                    s4_d_h_hours.value = totalHours % 24;
-                }
+                if (document.activeElement !== s4_d_h_days) { s4_d_h_days.value = Math.floor(totalHours / 24); }
+                if (document.activeElement !== s4_d_h_hours) { s4_d_h_hours.value = totalHours % 24; }
                 isUpdating = false;
             }
             s4_d_h_days.addEventListener('input', updateDHFromCompound);
             s4_d_h_hours.addEventListener('input', updateDHFromCompound);
             s4_d_h_total_hours.addEventListener('input', updateDHFromTotal);
 
-            // 3. ਮਹੀਨੇ <-> ਹਫਤੇ ਲਾਜਿਕ (ਨਵਾਂ)
+
             function updateMWFromCompound() {
-                if (isUpdating) return;
-                isUpdating = true;
-
-                let months = parseInt(s4_m_w_months.value) || 0;
-                let weeks = parseInt(s4_m_w_weeks.value) || 0;
-
-                if (weeks > 4) {
-                    s4_m_w_weeks.classList.add('input-error');
-                    s4_m_w_weeks_warning.textContent = "ਹਫਤੇ 4 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
-                } else {
-                    s4_m_w_weeks.classList.remove('input-error');
-                    s4_m_w_weeks_warning.textContent = "";
-                }
-                
-                // ਇੱਥੇ 1 ਮਹੀਨਾ = 4 ਹਫਤੇ ਮੰਨਿਆ ਗਿਆ ਹੈ
-                if (document.activeElement !== s4_m_w_total_weeks) {
-                    s4_m_w_total_weeks.value = (months * 4) + weeks;
-                }
+                if (isUpdating) return; isUpdating = true;
+                let months = parseInt(s4_m_w_months.value) || 0, weeks = parseInt(s4_m_w_weeks.value) || 0;
+                if (weeks > 4) { s4_m_w_weeks.classList.add('input-error'); s4_m_w_weeks_warning.textContent = "ਹਫਤੇ 4 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
+                else { s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = ""; }
+                if (document.activeElement !== s4_m_w_total_weeks) { s4_m_w_total_weeks.value = (months * 4) + weeks; }
                 isUpdating = false;
             }
             function updateMWFromTotal() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                s4_m_w_weeks.classList.remove('input-error');
-                s4_m_w_weeks_warning.textContent = "";
-
+                if (isUpdating) return; isUpdating = true;
+                s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = "";
                 const totalWeeks = parseInt(s4_m_w_total_weeks.value) || 0;
-                if (document.activeElement !== s4_m_w_months) {
-                    s4_m_w_months.value = Math.floor(totalWeeks / 4);
-                }
-                if (document.activeElement !== s4_m_w_weeks) {
-                    s4_m_w_weeks.value = totalWeeks % 4;
-                }
+                if (document.activeElement !== s4_m_w_months) { s4_m_w_months.value = Math.floor(totalWeeks / 4); }
+                if (document.activeElement !== s4_m_w_weeks) { s4_m_w_weeks.value = totalWeeks % 4; }
                 isUpdating = false;
             }
             s4_m_w_months.addEventListener('input', updateMWFromCompound);
             s4_m_w_weeks.addEventListener('input', updateMWFromCompound);
             s4_m_w_total_weeks.addEventListener('input', updateMWFromTotal);
 
-            // 4. ਸਾਲ <-> ਮਹੀਨੇ ਲਾਜਿਕ
+
             function updateYMFromCompound() {
-                if (isUpdating) return;
-                isUpdating = true;
-
-                let years = parseInt(s4_y_m_years.value) || 0;
-                let months = parseInt(s4_y_m_months.value) || 0;
-
-                if (months > 12) {
-                    s4_y_m_months.classList.add('input-error');
-                    s4_y_m_months_warning.textContent = "ਮਹੀਨੇ 12 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ";
-                } else {
-                    s4_y_m_months.classList.remove('input-error');
-                    s4_y_m_months_warning.textContent = "";
-                }
-                
-                if (document.activeElement !== s4_y_m_total_months) {
-                    s4_y_m_total_months.value = (years * 12) + months;
-                }
+                if (isUpdating) return; isUpdating = true;
+                let years = parseInt(s4_y_m_years.value) || 0, months = parseInt(s4_y_m_months.value) || 0;
+                if (months > 12) { s4_y_m_months.classList.add('input-error'); s4_y_m_months_warning.textContent = "ਮਹੀਨੇ 12 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
+                else { s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = ""; }
+                if (document.activeElement !== s4_y_m_total_months) { s4_y_m_total_months.value = (years * 12) + months; }
                 isUpdating = false;
             }
             function updateYMFromTotal() {
-                if (isUpdating) return;
-                isUpdating = true;
-                
-                s4_y_m_months.classList.remove('input-error');
-                s4_y_m_months_warning.textContent = "";
-
+                if (isUpdating) return; isUpdating = true;
+                s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = "";
                 const totalMonths = parseInt(s4_y_m_total_months.value) || 0;
-                if (document.activeElement !== s4_y_m_years) {
-                    s4_y_m_years.value = Math.floor(totalMonths / 12);
-                }
-                if (document.activeElement !== s4_y_m_months) {
-                    s4_y_m_months.value = totalMonths % 12;
-                }
+                if (document.activeElement !== s4_y_m_years) { s4_y_m_years.value = Math.floor(totalMonths / 12); }
+                if (document.activeElement !== s4_y_m_months) { s4_y_m_months.value = totalMonths % 12; }
                 isUpdating = false;
             }
             s4_y_m_years.addEventListener('input', updateYMFromCompound);
             s4_y_m_months.addEventListener('input', updateYMFromCompound);
             s4_y_m_total_months.addEventListener('input', updateYMFromTotal);
 
-            // ਰੀਸੈੱਟ ਬਟਨ
+
             reset4_btn.addEventListener('click', () => {
                 isUpdating = true; 
                 s4_h_m_hours.value = ''; s4_h_m_minutes.value = ''; s4_h_m_total_minutes.value = '';
@@ -825,21 +680,13 @@
                 s4_m_w_months.value = ''; s4_m_w_weeks.value = ''; s4_m_w_total_weeks.value = '';
                 s4_y_m_years.value = ''; s4_y_m_months.value = ''; s4_y_m_total_months.value = '';
                 
-                // ਵਾਰਨਿੰਗਾਂ ਵੀ ਰੀਸੈੱਟ ਕਰੋ
-                s4_h_m_minutes.classList.remove('input-error');
-                s4_h_m_minutes_warning.textContent = "";
-                s4_d_h_hours.classList.remove('input-error');
-                s4_d_h_hours_warning.textContent = "";
-                s4_m_w_weeks.classList.remove('input-error');
-                s4_m_w_weeks_warning.textContent = "";
-                s4_y_m_months.classList.remove('input-error');
-                s4_y_m_months_warning.textContent = "";
-                
+                s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = "";
+                s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = "";
+                s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = "";
+                s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = "";
                 isUpdating = false; 
             });
-
         });
     </script>
 </body>
 </html>
-
