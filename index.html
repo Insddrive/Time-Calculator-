@@ -1,18 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ</title>
     
-    <!-- PWA ਸੈਟਿੰਗਾਂ -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-
     <style>
-        /* --- ਆਫਲਾਈਨ CSS --- */
         :root {
             --bg-color: #000000;
             --card-bg: #0f1115; 
@@ -21,20 +18,20 @@
             --text-white: #ffffff;
             --text-gray: #d1d5db;
             --text-gray-light: #9ca3af;
+            
             --green-primary: #4ade80; 
             --green-dark: #15803d;
             --purple-primary: #c084fc; 
             --purple-dark: #7e22ce;
             --blue-primary: #60a5fa; 
             --blue-dark: #1d4ed8;
+            --orange-primary: #fb923c;
+            --orange-dark: #ea580c;
+            
             --red-error: #ef4444;
-            --red-btn: #dc2626;
-            --red-btn-hover: #b91c1c;
         }
 
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--bg-color);
@@ -46,170 +43,117 @@
             min-height: 100vh;
         }
 
-
         main {
             width: 100%;
             max-width: 42rem; 
             display: flex;
             flex-direction: column;
-            gap: 2rem; 
+            gap: 1.5rem; 
+            padding-bottom: 3rem;
         }
-
 
         section {
             background-color: var(--card-bg);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            border-width: 2px;
-            border-style: solid;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            border-radius: 1.25rem;
+            padding: 1.25rem;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
-
 
         .border-green { border-color: var(--green-primary); }
         .border-purple { border-color: var(--purple-primary); }
         .border-blue { border-color: var(--blue-primary); }
+        .border-orange { border-color: var(--orange-primary); }
         .border-white { border-color: var(--text-white); }
 
-
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 1.25rem;
-        }
-
-
+        h2 { font-size: 1.3rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
         .text-green { color: var(--green-primary); }
         .text-purple { color: var(--purple-primary); }
         .text-blue { color: var(--blue-primary); }
-        .text-white { color: var(--text-white); }
+        .text-orange { color: var(--orange-primary); }
 
+        .grid-item { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .grid-5 { display: grid; grid-template-columns: 2fr 0.3fr 1fr 1fr; gap: 0.4rem; align-items: end; margin-bottom: 0.75rem; }
 
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        @media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+        label { display: block; margin-bottom: 0.35rem; font-weight: 600; font-size: 0.85rem; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-
-        .grid-5 {
-            display: grid;
-            grid-template-columns: 2fr 0.5fr 1fr 1fr;
-            gap: 0.5rem;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
-
-        label {
-            display: block;
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        .label-green { color: #86efac; }
-        .label-purple { color: #d8b4fe; }
-        .label-blue { color: #93c5fd; }
-        .label-gray { color: var(--text-gray); font-size: 0.875rem; }
-
-
-        input[type="text"], input[type="number"], input[type="time"] {
+        input {
             width: 100%;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--text-white);
-            padding: 0.75rem;
+            padding: 0.7rem;
             border-radius: 0.75rem;
             font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-
-        input:focus {
             outline: none;
-            border-color: var(--text-white);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+            height: 2.8rem;
         }
-        
-        .input-green:focus { border-color: var(--green-primary); box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.3); }
-        .input-purple:focus { border-color: var(--purple-primary); box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.3); }
-        .input-blue:focus { border-color: var(--blue-primary); box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3); }
 
-
-        .input-compact { padding: 0.5rem; text-align: center; }
-        .input-compact-left { padding: 0.5rem; text-align: left; }
-
-
-        .input-error { border-color: var(--red-error) !important; color: var(--red-error) !important; }
-        .warning-text { color: var(--red-error); font-size: 0.875rem; margin-top: 0.25rem; min-height: 1.25rem; }
-
+        input:focus { border-color: var(--text-white); }
+        input.error { border-color: var(--red-error); }
 
         .btn {
-            width: 100%; padding: 0.75rem; border-radius: 0.75rem; font-weight: 700; color: white;
-            border: none; cursor: pointer; font-size: 1rem; transition: opacity 0.2s;
+            width: 100%; padding: 0.8rem; border-radius: 0.75rem; font-weight: 700; color: white;
+            border: none; cursor: pointer; font-size: 1rem; margin-top: 0.5rem;
         }
-        .btn:hover { opacity: 0.9; }
-
-
         .btn-green { background-color: var(--green-dark); }
         .btn-purple { background-color: var(--purple-dark); }
         .btn-blue { background-color: var(--blue-dark); }
+        .btn-orange { background-color: var(--orange-dark); }
         
         .btn-reset {
-            background-color: var(--red-btn); width: auto; padding: 0.5rem 1rem;
-            font-size: 0.875rem; margin-top: 1rem;
+            background-color: #374151; width: auto; padding: 0.4rem 0.8rem;
+            font-size: 0.75rem; margin-top: 0.75rem; border-radius: 0.5rem;
         }
-        .btn-reset:hover { background-color: var(--red-btn-hover); }
-
 
         .output-box {
-            background-color: #111827; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;
-            text-align: center; box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+            background-color: #000000; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;
+            text-align: center; border: 1px solid #374151;
         }
         .hidden { display: none; }
-        .result-text {
-            font-family: monospace; font-size: 1.125rem; margin-bottom: 0.5rem; color: #f3f4f6;
-        }
-        hr { border: 0; border-top: 1px solid #374151; margin: 0.5rem 0; }
-
+        .result-text { font-family: 'Courier New', monospace; font-size: 1.05rem; color: #f3f4f6; line-height: 1.5; }
+        .result-highlight { color: var(--green-primary); font-weight: bold; }
 
         .date-wrapper { position: relative; width: 100%; }
         .calendar-trigger {
-            position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
-            cursor: pointer; color: var(--text-gray-light); background: none; border: none; padding: 0; font-size: 1.2rem;
+            position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
+            pointer-events: none; font-size: 1rem;
         }
         .native-date-picker {
-            position: absolute; right: 0; top: 0; width: 3rem; height: 100%; opacity: 0; cursor: pointer; z-index: 10;
+            position: absolute; right: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
         }
-        .arrow-icon { font-size: 1.875rem; font-weight: 600; color: #6b7280; text-align: center; padding-top: 0.25rem; }
+        .arrow-icon { font-size: 1rem; color: #6b7280; text-align: center; padding-bottom: 0.85rem; }
+
+        @media (max-width: 400px) {
+            h2 { font-size: 1.1rem; }
+            input { padding: 0.5rem; font-size: 0.9rem; height: 2.5rem; }
+            label { font-size: 0.75rem; }
+        }
     </style>
 </head>
 <body>
     <main>
-        <!-- ਸੈਕਸ਼ਨ 1 -->
+        <!-- S1: ਤਰੀਕ ਦਾ ਅੰਤਰ -->
         <section class="border-green">
             <h2 class="text-green">ਸੈਕਸ਼ਨ 1: ਤਰੀਕ ਦਾ ਅੰਤਰ</h2>
             <div class="grid-2">
-                <div>
-                    <label for="s1-date1" class="label-green">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
+                <div class="grid-item">
+                    <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="input-green" data-input> 
-                        <button class="calendar-trigger">📅</button>
+                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input> 
+                        <span class="calendar-trigger">📅</span>
                         <input type="date" class="native-date-picker" data-target="s1-date1">
                     </div>
-                    <p id="s1-date1-warning" class="warning-text"></p>
                 </div>
-                <div>
-                    <label for="s1-date2" class="label-green">ਅੰਤਿਮ ਤਰੀਕ</label>
+                <div class="grid-item">
+                    <label>ਅੰਤਿਮ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="input-green" data-input>
-                        <button class="calendar-trigger">📅</button>
+                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
+                        <span class="calendar-trigger">📅</span>
                         <input type="date" class="native-date-picker" data-target="s1-date2">
                     </div>
-                    <p id="s1-date2-warning" class="warning-text"></p>
                 </div>
             </div>
             <button id="calc1" class="btn btn-green">ਗਣਨਾ ਕਰੋ</button>
@@ -219,18 +163,12 @@
             </div>
         </section>
         
-        <!-- ਸੈਕਸ਼ਨ 2 -->
+        <!-- S2: ਸਮੇਂ ਦਾ ਅੰਤਰ -->
         <section class="border-purple">
             <h2 class="text-purple">ਸੈਕਸ਼ਨ 2: ਸਮੇਂ ਦਾ ਅੰਤਰ</h2>
             <div class="grid-2">
-                <div>
-                    <label for="s2-time1" class="label-purple">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s2-time1" class="input-purple" required>
-                </div>
-                <div>
-                    <label for="s2-time2" class="label-purple">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s2-time2" class="input-purple" required>
-                </div>
+                <div class="grid-item"><label>ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ</label><input type="time" id="s2-time1"></div>
+                <div class="grid-item"><label>ਅੰਤਿਮ ਸਮਾਂ</label><input type="time" id="s2-time2"></div>
             </div>
             <button id="calc2" class="btn btn-purple">ਗਣਨਾ ਕਰੋ</button>
             <div id="output-box2" class="output-box hidden">
@@ -238,455 +176,232 @@
                 <button id="reset2" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
-        
-        <!-- ਸੈਕਸ਼ਨ 3 -->
+
+        <!-- S3: ਕੁੱਲ ਅੰਤਰ (Y/M/D/H/M Fixed) -->
         <section class="border-blue">
             <h2 class="text-blue">ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ</h2>
             <div class="grid-2">
-                <div>
-                    <label for="s3-date1" class="label-blue">ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
+                <div class="grid-item">
+                    <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" class="input-blue" data-input>
-                        <button class="calendar-trigger">📅</button>
+                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
+                        <span class="calendar-trigger">📅</span>
                         <input type="date" class="native-date-picker" data-target="s3-date1">
                     </div>
-                    <p id="s3-date1-warning" class="warning-text"></p>
                 </div>
-                <div>
-                    <label for="s3-time1" class="label-blue">ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s3-time1" class="input-blue" required>
-                </div>
-                <div>
-                    <label for="s3-date2" class="label-blue">ਅੰਤਿਮ ਤਰੀਕ</label>
+                <div class="grid-item"><label>ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ</label><input type="time" id="s3-time1"></div>
+                <div class="grid-item">
+                    <label>ਅੰਤਿਮ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" class="input-blue" data-input>
-                        <button class="calendar-trigger">📅</button>
+                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
+                        <span class="calendar-trigger">📅</span>
                         <input type="date" class="native-date-picker" data-target="s3-date2">
                     </div>
-                    <p id="s3-date2-warning" class="warning-text"></p>
                 </div>
-                <div>
-                    <label for="s3-time2" class="label-blue">ਅੰਤਿਮ ਸਮਾਂ (HH:MM)</label>
-                    <input type="time" id="s3-time2" class="input-blue" required>
-                </div>
+                <div class="grid-item"><label>ਅੰਤਿਮ ਸਮਾਂ</label><input type="time" id="s3-time2"></div>
             </div>
             <button id="calc3" class="btn btn-blue">ਗਣਨਾ ਕਰੋ</button>
             <div id="output-box3" class="output-box hidden">
-                <p id="result3-ymd" class="result-text"></p>
-                <p id="result3-hms" class="result-text"></p>
-                <hr>
-                <p id="result3-total-dhm" class="result-text" style="font-size: 1rem;"></p>
-                <p id="result3-total_h" class="result-text" style="font-size: 1rem;"></p>
+                <p id="result3-text" class="result-text"></p>
+                <p id="result3-total" class="result-text" style="color: var(--blue-primary); font-size: 0.9rem; margin-top: 5px;"></p>
                 <button id="reset3" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
 
-
-        <!-- ਸੈਕਸ਼ਨ 4 -->
+        <!-- S4: ਯੂਨਿਟ ਕਨਵਰਟਰ -->
         <section class="border-white">
             <h2 class="text-white">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
-            
-            <!-- ਮਿੰਟ <-> ਘੰਟੇ:ਮਿੰਟ -->
             <div class="grid-5">
-                <div>
-                    <label for="s4_h_m_total_minutes" class="label-gray">ਕੁੱਲ ਮਿੰਟ</label>
-                    <input type="number" id="s4_h_m_total_minutes" placeholder="0" inputmode="numeric" class="input-compact-left">
+                <div class="grid-item"><label>ਕੁੱਲ ਮਿੰਟ</label><input type="number" id="s4_h_m_total" placeholder="0"></div>
+                <div class="arrow-icon">⇄</div>
+                <div class="grid-item"><label>ਘੰਟੇ</label><input type="number" id="s4_h_m_h" placeholder="0"></div>
+                <div class="grid-item"><label>ਮਿੰਟ</label><input type="number" id="s4_h_m_m" placeholder="0"></div>
+            </div>
+            <div class="grid-5">
+                <div class="grid-item"><label>ਕੁੱਲ ਘੰਟੇ</label><input type="number" id="s4_d_h_total" placeholder="0"></div>
+                <div class="arrow-icon">⇄</div>
+                <div class="grid-item"><label>ਦਿਨ</label><input type="number" id="s4_d_h_d" placeholder="0"></div>
+                <div class="grid-item"><label>ਘੰਟੇ</label><input type="number" id="s4_d_h_h" placeholder="0"></div>
+            </div>
+            <div class="grid-5">
+                <div class="grid-item"><label>ਕੁੱਲ ਹਫਤੇ</label><input type="number" id="s4_m_w_total" placeholder="0"></div>
+                <div class="arrow-icon">⇄</div>
+                <div class="grid-item"><label>ਮਹੀਨੇ</label><input type="number" id="s4_m_w_m" placeholder="0"></div>
+                <div class="grid-item"><label>ਹਫਤੇ</label><input type="number" id="s4_m_w_w" placeholder="0"></div>
+            </div>
+            <div class="grid-5">
+                <div class="grid-item"><label>ਕੁੱਲ ਮਹੀਨੇ</label><input type="number" id="s4_y_m_total" placeholder="0"></div>
+                <div class="arrow-icon">⇄</div>
+                <div class="grid-item"><label>ਸਾਲ</label><input type="number" id="s4_y_m_y" placeholder="0"></div>
+                <div class="grid-item"><label>ਮਹੀਨੇ</label><input type="number" id="s4_y_m_mo" placeholder="0"></div>
+            </div>
+            <div style="text-align: center;"><button id="reset4" class="btn btn-reset">ਰੀਸੈੱਟ</button></div>
+        </section>
+
+        <!-- S5: ਤਰੀਕ ਵਿੱਚ ਸਮਾਂ ਜੋੜੋ -->
+        <section class="border-orange">
+            <h2 class="text-orange">ਸੈਕਸ਼ਨ 5: ਤਰੀਕ ਵਿੱਚ ਸਮਾਂ ਜੋੜੋ</h2>
+            <div class="grid-2">
+                <div class="grid-item">
+                    <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ (ਖਾਲੀ=ਅੱਜ)</label>
+                    <div class="date-wrapper">
+                        <input type="text" id="s5-date" placeholder="DD-MM-YYYY" inputmode="tel" class="input-orange" data-input>
+                        <span class="calendar-trigger">📅</span>
+                        <input type="date" class="native-date-picker" data-target="s5-date">
+                    </div>
                 </div>
-                <div class="arrow-icon">&harr;</div>
-                <div>
-                    <label for="s4_h_m_hours" class="label-gray">ਘੰਟੇ</label>
-                    <input type="number" id="s4_h_m_hours" placeholder="0" inputmode="numeric" class="input-compact">
-                </div>
-                <div>
-                    <label for="s4_h_m_minutes" class="label-gray">ਮਿੰਟ</label>
-                    <input type="number" id="s4_h_m_minutes" placeholder="0" inputmode="numeric" class="input-compact">
-                    <p id="s4_h_m_minutes-warning" class="warning-text text-center"></p>
+                <div class="grid-item">
+                    <label>ਸਮਾਂ (Optional)</label>
+                    <input type="time" id="s5-time" class="input-orange">
                 </div>
             </div>
-            
-            <!-- ਘੰਟੇ <-> ਦਿਨ:ਘੰਟੇ -->
-            <div class="grid-5">
-                <div>
-                    <label for="s4_d_h_total_hours" class="label-gray">ਕੁੱਲ ਘੰਟੇ</label>
-                    <input type="number" id="s4_d_h_total_hours" placeholder="0" inputmode="numeric" class="input-compact-left">
-                </div>
-                <div class="arrow-icon">&harr;</div>
-                <div>
-                    <label for="s4_d_h_days" class="label-gray">ਦਿਨ</label>
-                    <input type="number" id="s4_d_h_days" placeholder="0" inputmode="numeric" class="input-compact">
-                </div>
-                <div>
-                    <label for="s4_d_h_hours" class="label-gray">ਘੰਟੇ</label>
-                    <input type="number" id="s4_d_h_hours" placeholder="0" inputmode="numeric" class="input-compact">
-                    <p id="s4_d_h_hours-warning" class="warning-text text-center"></p>
-                </div>
+            <div class="grid-3">
+                <div class="grid-item"><label>ਸਾਲ (+)</label><input type="number" id="s5-add-y" placeholder="0" class="input-orange"></div>
+                <div class="grid-item"><label>ਮਹੀਨੇ (+)</label><input type="number" id="s5-add-m" placeholder="0" class="input-orange"></div>
+                <div class="grid-item"><label>ਦਿਨ (+)</label><input type="number" id="s5-add-d" placeholder="0" class="input-orange"></div>
             </div>
-
-
-            <!-- ਹਫਤੇ <-> ਮਹੀਨੇ:ਹਫਤੇ -->
-            <div class="grid-5">
-                <div>
-                    <label for="s4_m_w_total_weeks" class="label-gray">ਕੁੱਲ ਹਫਤੇ</label>
-                    <input type="number" id="s4_m_w_total_weeks" placeholder="0" inputmode="numeric" class="input-compact-left">
-                </div>
-                <div class="arrow-icon">&harr;</div>
-                <div>
-                    <label for="s4_m_w_months" class="label-gray">ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_m_w_months" placeholder="0" inputmode="numeric" class="input-compact">
-                </div>
-                <div>
-                    <label for="s4_m_w_weeks" class="label-gray">ਹਫਤੇ</label>
-                    <input type="number" id="s4_m_w_weeks" placeholder="0" inputmode="numeric" class="input-compact">
-                    <p id="s4_m_w_weeks-warning" class="warning-text text-center"></p>
-                </div>
+            <div class="grid-2">
+                <div class="grid-item"><label>ਘੰਟੇ (+)</label><input type="number" id="s5-add-h" placeholder="0" class="input-orange"></div>
+                <div class="grid-item"><label>ਮਿੰਟ (+)</label><input type="number" id="s5-add-min" placeholder="0" class="input-orange"></div>
             </div>
-
-
-            <!-- ਮਹੀਨੇ <-> ਸਾਲ:ਮਹੀਨੇ -->
-            <div class="grid-5">
-                <div>
-                    <label for="s4_y_m_total_months" class="label-gray">ਕੁੱਲ ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_y_m_total_months" placeholder="0" inputmode="numeric" class="input-compact-left">
-                </div>
-                <div class="arrow-icon">&harr;</div>
-                <div>
-                    <label for="s4_y_m_years" class="label-gray">ਸਾਲ</label>
-                    <input type="number" id="s4_y_m_years" placeholder="0" inputmode="numeric" class="input-compact">
-                </div>
-                <div>
-                    <label for="s4_y_m_months" class="label-gray">ਮਹੀਨੇ</label>
-                    <input type="number" id="s4_y_m_months" placeholder="0" inputmode="numeric" class="input-compact">
-                    <p id="s4_y_m_months-warning" class="warning-text text-center"></p>
-                </div>
-            </div>
-
-
-            <div style="text-align: center;">
-                <button id="reset4" class="btn btn-reset">ਰੀਸੈੱਟ</button>
+            <button id="calc5" class="btn btn-orange">ਨਵੀਂ ਤਰੀਕ ਪਤਾ ਕਰੋ</button>
+            <div id="output-box5" class="output-box hidden">
+                <p id="result5" class="result-text result-highlight"></p>
+                <button id="reset5" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
     </main>
 
-
     <script>
-        // --- PWA ਰਜਿਸਟ੍ਰੇਸ਼ਨ ---
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('SW registered', reg))
-                .catch(err => console.log('SW failed', err));
-        }
-
-
         document.addEventListener('DOMContentLoaded', () => {
-            // ਮਿਤੀ ਪਿਕਰ (Native)
-            document.querySelectorAll('.native-date-picker').forEach(picker => {
-                picker.addEventListener('change', (e) => {
-                    const targetId = e.target.getAttribute('data-target');
-                    const textInput = document.getElementById(targetId);
-                    const parts = e.target.value.split('-');
-                    if (parts.length === 3) {
-                        textInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                        textInput.dispatchEvent(new Event('input'));
-                    }
-                });
-            });
+            const pad = n => n.toString().padStart(2, '0');
 
-
-            // ਇਨਪੁਟ ਵੈਲੀਡੇਸ਼ਨ
+            // Robust Input Mask
             document.querySelectorAll('input[data-input]').forEach(input => {
-                input.addEventListener('input', (e) => {
-                    if (!e.isTrusted) return; 
-                    const target = e.target;
-                    const originalValue = target.value;
-                    let value = originalValue.replace(/[^\d]/g, ''); 
-                    let formattedValue = '';
-                    if (value.length > 0) {
-                        if (value.length <= 2) { formattedValue = value; } 
-                        else if (value.length <= 4) { formattedValue = `${value.substring(0, 2)}-${value.substring(2)}`; } 
-                        else { formattedValue = `${value.substring(0, 2)}-${value.substring(2, 4)}-${value.substring(4, 8)}`; }
+                input.addEventListener('keydown', e => { input._valBefore = input.value; });
+                input.addEventListener('input', () => {
+                    let v = input.value.replace(/[^\d]/g, '');
+                    if (input._valBefore && input.value.length < input._valBefore.length) return;
+                    let f = '';
+                    if (v.length > 0) {
+                        f += v.substring(0, 2);
+                        if (v.length > 2) f += '-' + v.substring(2, 4);
+                        if (v.length > 4) f += '-' + v.substring(4, 8);
                     }
-                    if (originalValue !== formattedValue) { target.value = formattedValue; }
-                    const warningElement = document.getElementById(target.id + '-warning');
-                    if (!warningElement) return; 
-                    warningElement.textContent = ''; 
-                    const parts = formattedValue.split('-');
-                    let dayError = false, monthError = false, dateInvalidError = false; 
-                    let invalidErrorMsg = "", dayNum = 0, monthNum = 0;
-                    if (parts[0] && parts[0].length > 0) {
-                        dayNum = parseInt(parts[0]);
-                        if (dayNum > 31 || (parts[0].length === 2 && dayNum === 0)) { dayError = true; }
-                    }
-                    if (parts[1] && parts[1].length > 0) {
-                        monthNum = parseInt(parts[1]);
-                        if (monthNum > 12 || (parts[1].length === 2 && monthNum === 0)) { monthError = true; }
-                    }
-                    if (!dayError && !monthError && dayNum > 0 && monthNum > 0 && parts[1].length === 2) {
-                        const shortMonths = [4, 6, 9, 11]; 
-                        if (dayNum === 31 && shortMonths.includes(monthNum)) {
-                            dateInvalidError = true; invalidErrorMsg = "ਇਸ ਮਹੀਨੇ ਵਿੱਚ 31 ਤਰੀਕ ਨਹੀਂ ਹੁੰਦੀ।";
-                        }
-                        if (monthNum === 2 && dayNum > 29) { 
-                            dateInvalidError = true; invalidErrorMsg = "ਫਰਵਰੀ ਵਿੱਚ 29 ਤੋਂ ਵੱਧ ਦਿਨ ਨਹੀਂ ਹੁੰਦੇ।";
-                        }
-                    }
-                    if (dayError) { warningElement.textContent = "ਦਿਨ 01-31"; } 
-                    else if (monthError) { warningElement.textContent = "ਮਹੀਨਾ 01-12"; } 
-                    else if (dateInvalidError) { warningElement.textContent = invalidErrorMsg; }
+                    input.value = f;
                 });
             });
 
+            // Native Date Picker Sync
+            document.querySelectorAll('.native-date-picker').forEach(p => {
+                p.addEventListener('change', e => {
+                    const t = document.getElementById(e.target.dataset.target);
+                    const pts = e.target.value.split('-');
+                    if (pts.length === 3) {
+                        t.value = `${pts[2]}-${pts[1]}-${pts[0]}`;
+                        t.classList.remove('error');
+                    }
+                });
+            });
 
-            // ਗਣਨਾ ਫੰਕਸ਼ਨ
-            function parseDate(dateStr) {
-                if (!dateStr || dateStr.length < 10) return null; 
-                const parts = dateStr.split('-');
-                if (parts.length !== 3) return null;
-                if (parts.some(p => isNaN(Number(p)) || p === '')) return null;
-                const [day, month, year] = parts.map(Number);
-                if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1000 || year > 9999) return null;
-                const dateObj = new Date(year, month - 1, day);
-                if (dateObj.getFullYear() !== year || dateObj.getMonth() !== (month - 1) || dateObj.getDate() !== day) {
-                    return null;
-                }
-                return dateObj;
-            }
-            function parseTime(timeStr) {
-                if (!timeStr) return null; 
-                const parts = timeStr.split(':');
-                if (parts.length !== 2 || parts.some(p => p === '' || isNaN(p))) return null; 
-                const h = parseInt(parts[0]), m = parseInt(parts[1]);
-                if (h < 0 || h > 23 || m < 0 || m > 59) return null; 
-                return { h, m, s: 0 };
-            }
-            function daysInMonth(year, month) {
-                return new Date(year, month + 1, 0).getDate();
-            }
-            
-            const s1_date1 = document.getElementById('s1-date1'), s1_date2 = document.getElementById('s1-date2');
-            const calc1_btn = document.getElementById('calc1'), result1 = document.getElementById('result1');
-            const output_box1 = document.getElementById('output-box1'), reset1_btn = document.getElementById('reset1');
-            const s2_time1 = document.getElementById('s2-time1'), s2_time2 = document.getElementById('s2-time2');
-            const calc2_btn = document.getElementById('calc2'), result2 = document.getElementById('result2');
-            const output_box2 = document.getElementById('output-box2'), reset2_btn = document.getElementById('reset2');
-            const s3_date1 = document.getElementById('s3-date1'), s3_date2 = document.getElementById('s3-date2');
-            const s3_time1 = document.getElementById('s3-time1'), s3_time2 = document.getElementById('s3-time2');
-            const calc3_btn = document.getElementById('calc3'), output_box3 = document.getElementById('output-box3');
-            const result3_ymd = document.getElementById('result3-ymd'), result3_hms = document.getElementById('result3-hms');
-            const result3_total_dhm = document.getElementById('result3-total-dhm'), result3_total_h = document.getElementById('result3-total_h');
-            const reset3_btn = document.getElementById('reset3');
-            
-            calc1_btn.addEventListener('click', () => {
-                document.getElementById('s1-date1-warning').textContent = '';
-                document.getElementById('s1-date2-warning').textContent = '';
-                const d1 = parseDate(s1_date1.value), d2 = parseDate(s1_date2.value);
-                if (!d1 || !d2) {
-                    result1.textContent = "ਤਰੀਕ ਸਹੀ ਭਰੋ (ਜਿਵੇਂ 29-02-2023 ਗਲਤ ਹੈ)";
-                    output_box1.classList.remove('hidden'); return;
-                }
-                let startDate = d1 < d2 ? d1 : d2, endDate = d1 > d2 ? d1 : d2;
-                let years = endDate.getFullYear() - startDate.getFullYear();
-                let months = endDate.getMonth() - startDate.getMonth();
-                let days = endDate.getDate() - startDate.getDate();
-                if (days < 0) { months--; days += daysInMonth(startDate.getFullYear(), startDate.getMonth()); }
-                if (months < 0) { years--; months += 12; }
-                result1.textContent = `ਅੰਤਰ: ${years} ਸਾਲ ${months} ਮਹੀਨੇ ${days} ਦਿਨ`;
-                output_box1.classList.remove('hidden');
+            // Helpers
+            const parseDate = s => {
+                if (!s || s.length < 10) return null;
+                const p = s.split('-').map(Number);
+                const d = new Date(p[2], p[1] - 1, p[0]);
+                return (d.getDate() === p[0] && d.getMonth() === p[1] - 1) ? d : null;
+            };
+            const parseTime = s => s ? { h: parseInt(s.split(':')[0]), m: parseInt(s.split(':')[1]) } : null;
+
+            // Section 1 Logic
+            document.getElementById('calc1').addEventListener('click', () => {
+                const i1 = document.getElementById('s1-date1'), i2 = document.getElementById('s1-date2');
+                const d1 = parseDate(i1.value), d2 = parseDate(i2.value);
+                if (!d1 || !d2) return;
+                let start = d1 < d2 ? d1 : d2, end = d1 > d2 ? d1 : d2;
+                let y = end.getFullYear() - start.getFullYear(), m = end.getMonth() - start.getMonth(), d = end.getDate() - start.getDate();
+                if (d < 0) { m--; d += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate(); }
+                if (m < 0) { y--; m += 12; }
+                document.getElementById('result1').textContent = `ਅੰਤਰ: ${y} ਸਾਲ, ${m} ਮਹੀਨੇ, ${d} ਦਿਨ`;
+                document.getElementById('output-box1').classList.remove('hidden');
             });
-            reset1_btn.addEventListener('click', () => {
-                s1_date1.value = ''; s1_date2.value = '';
-                result1.textContent = ''; output_box1.classList.add('hidden');
-                document.getElementById('s1-date1-warning').textContent = '';
-                document.getElementById('s1-date2-warning').textContent = '';
+
+            // Section 2 Logic
+            document.getElementById('calc2').addEventListener('click', () => {
+                const t1 = parseTime(document.getElementById('s2-time1').value), t2 = parseTime(document.getElementById('s2-time2').value);
+                if (!t1 || !t2) return;
+                let diff = Math.abs((t2.h * 60 + t2.m) - (t1.h * 60 + t1.m));
+                document.getElementById('result2').textContent = `ਅੰਤਰ: ${Math.floor(diff/60)} ਘੰਟੇ, ${diff%60} ਮਿੰਟ`;
+                document.getElementById('output-box2').classList.remove('hidden');
             });
-            
-            calc2_btn.addEventListener('click', () => {
-                const t1 = parseTime(s2_time1.value), t2 = parseTime(s2_time2.value);
-                if (!t1 || !t2) {
-                    result2.textContent = "ਸਮਾਂ ਸਹੀ ਭਰੋ";
-                    output_box2.classList.remove('hidden'); return;
-                }
-                let totalSeconds1 = t1.h * 3600 + t1.m * 60;
-                let totalSeconds2 = t2.h * 3600 + t2.m * 60;
-                let diffSeconds = Math.abs(totalSeconds1 - totalSeconds2);
-                let h = Math.floor(diffSeconds / 3600);
-                diffSeconds %= 3600;
-                let m = Math.floor(diffSeconds / 60);
-                result2.textContent = `ਅੰਤਰ: ${h} ਘੰਟੇ ${m} ਮਿੰਟ`;
-                output_box2.classList.remove('hidden');
-            });
-            reset2_btn.addEventListener('click', () => {
-                s2_time1.value = ''; s2_time2.value = '';
-                result2.textContent = ''; output_box2.classList.add('hidden');
-            });
-            
-            calc3_btn.addEventListener('click', () => {
-                document.getElementById('s3-date1-warning').textContent = '';
-                document.getElementById('s3-date2-warning').textContent = '';
-                const d1 = parseDate(s3_date1.value), d2 = parseDate(s3_date2.value);
-                if (!d1 || !d2) {
-                    result3_ymd.textContent = "ਤਰੀਕ ਸਹੀ ਭਰੋ";
-                    result3_hms.textContent = ""; result3_total_dhm.textContent = ""; result3_total_h.textContent = "";
-                    output_box3.classList.remove('hidden'); return;
-                }
-                const t1 = parseTime(s3_time1.value), t2 = parseTime(s3_time2.value);
-                if (!t1 || !t2) {
-                    result3_ymd.textContent = "ਸਮਾਂ ਸਹੀ ਭਰੋ";
-                    result3_hms.textContent = ""; result3_total_dhm.textContent = ""; result3_total_h.textContent = "";
-                    output_box3.classList.remove('hidden'); return;
-                }
+
+            // Section 3 Logic (Fixed Detailed Output)
+            document.getElementById('calc3').addEventListener('click', () => {
+                const d1 = parseDate(document.getElementById('s3-date1').value);
+                const d2 = parseDate(document.getElementById('s3-date2').value);
+                if (!d1 || !d2) return;
+                const t1 = parseTime(document.getElementById('s3-time1').value) || {h:0, m:0};
+                const t2 = parseTime(document.getElementById('s3-time2').value) || {h:0, m:0};
+                
                 const dt1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate(), t1.h, t1.m);
                 const dt2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate(), t2.h, t2.m);
-                let startDate = dt1 < dt2 ? dt1 : dt2, endDate = dt1 > d2 ? dt1 : dt2;
-                let diffMs = Math.abs(dt2 - dt1);
-                let years = endDate.getFullYear() - startDate.getFullYear();
-                let months = endDate.getMonth() - startDate.getMonth();
-                let days = endDate.getDate() - startDate.getDate();
-                let hours = endDate.getHours() - startDate.getHours();
-                let minutes = endDate.getMinutes() - startDate.getMinutes();
-                if (minutes < 0) { hours--; minutes += 60; }
-                if (hours < 0) { days--; hours += 24; }
-                if (days < 0) { months--; days += daysInMonth(startDate.getFullYear(), startDate.getMonth()); }
-                if (months < 0) { years--; months += 12; }
-                result3_ymd.textContent = `ਅੰਤਰ: ${years} ਸਾਲ ${months} ਮਹੀਨੇ ${days} ਦਿਨ`;
-                result3_hms.textContent = `ਅਤੇ ${hours} ਘੰਟੇ ${minutes} ਮਿੰਟ`;
-                let totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                let remMs = diffMs % (1000 * 60 * 60 * 24);
-                let totalHours = Math.floor(remMs / (1000 * 60 * 60));
-                remMs %= (1000 * 60 * 60);
-                let totalMinutes = Math.floor(remMs / (1000 * 60));
-                result3_total_dhm.textContent = `ਕੁੱਲ: ${totalDays} ਦਿਨ, ${totalHours} ਘੰਟੇ ਅਤੇ ${totalMinutes} ਮਿੰਟ`;
-                let totalHoursOnly = (diffMs / (1000 * 60 * 60)).toFixed(2);
-                result3_total_h.textContent = `ਜਾਂ ਕੁੱਲ ${totalHoursOnly} ਘੰਟੇ`;
-                output_box3.classList.remove('hidden');
-            });
-            reset3_btn.addEventListener('click', () => {
-                s3_date1.value = ''; s3_date2.value = ''; s3_time1.value = ''; s3_time2.value = '';
-                result3_ymd.textContent = ''; result3_hms.textContent = '';
-                result3_total_dhm.textContent = ''; result3_total_h.textContent = '';
-                output_box3.classList.add('hidden');
-                document.getElementById('s3-date1-warning').textContent = '';
-                document.getElementById('s3-date2-warning').textContent = '';
-            });
-
-
-            // ਸੈਕਸ਼ਨ 4 ਕਨਵਰਟਰ
-            let isUpdating = false;
-            const s4_h_m_hours = document.getElementById('s4_h_m_hours');
-            const s4_h_m_minutes = document.getElementById('s4_h_m_minutes');
-            const s4_h_m_total_minutes = document.getElementById('s4_h_m_total_minutes');
-            const s4_h_m_minutes_warning = document.getElementById('s4_h_m_minutes-warning');
-            const s4_d_h_days = document.getElementById('s4_d_h_days');
-            const s4_d_h_hours = document.getElementById('s4_d_h_hours');
-            const s4_d_h_total_hours = document.getElementById('s4_d_h_total_hours');
-            const s4_d_h_hours_warning = document.getElementById('s4_d_h_hours-warning');
-            const s4_m_w_months = document.getElementById('s4_m_w_months');
-            const s4_m_w_weeks = document.getElementById('s4_m_w_weeks');
-            const s4_m_w_total_weeks = document.getElementById('s4_m_w_total_weeks');
-            const s4_m_w_weeks_warning = document.getElementById('s4_m_w_weeks-warning');
-            const s4_y_m_years = document.getElementById('s4_y_m_years');
-            const s4_y_m_months = document.getElementById('s4_y_m_months');
-            const s4_y_m_total_months = document.getElementById('s4_y_m_total_months');
-            const s4_y_m_months_warning = document.getElementById('s4_y_m_months-warning');
-            const reset4_btn = document.getElementById('reset4');
-            
-            function updateHMFromCompound() {
-                if (isUpdating) return; isUpdating = true;
-                let hours = parseInt(s4_h_m_hours.value) || 0, minutes = parseInt(s4_h_m_minutes.value) || 0;
-                if (minutes > 60) { s4_h_m_minutes.classList.add('input-error'); s4_h_m_minutes_warning.textContent = "ਮਿੰਟ 60 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
-                else { s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = ""; }
-                if (document.activeElement !== s4_h_m_total_minutes) { s4_h_m_total_minutes.value = (hours * 60) + minutes; }
-                isUpdating = false;
-            }
-            function updateHMFromTotal() {
-                if (isUpdating) return; isUpdating = true;
-                s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = "";
-                const totalMinutes = parseInt(s4_h_m_total_minutes.value) || 0;
-                if (document.activeElement !== s4_h_m_hours) { s4_h_m_hours.value = Math.floor(totalMinutes / 60); }
-                if (document.activeElement !== s4_h_m_minutes) { s4_h_m_minutes.value = totalMinutes % 60; }
-                isUpdating = false;
-            }
-            s4_h_m_hours.addEventListener('input', updateHMFromCompound);
-            s4_h_m_minutes.addEventListener('input', updateHMFromCompound);
-            s4_h_m_total_minutes.addEventListener('input', updateHMFromTotal);
-
-
-            function updateDHFromCompound() {
-                if (isUpdating) return; isUpdating = true;
-                let days = parseInt(s4_d_h_days.value) || 0, hours = parseInt(s4_d_h_hours.value) || 0;
-                if (hours > 23) { s4_d_h_hours.classList.add('input-error'); s4_d_h_hours_warning.textContent = "ਘੰਟੇ 23 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
-                else { s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = ""; }
-                if (document.activeElement !== s4_d_h_total_hours) { s4_d_h_total_hours.value = (days * 24) + hours; }
-                isUpdating = false;
-            }
-            function updateDHFromTotal() {
-                if (isUpdating) return; isUpdating = true;
-                s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = "";
-                const totalHours = parseInt(s4_d_h_total_hours.value) || 0;
-                if (document.activeElement !== s4_d_h_days) { s4_d_h_days.value = Math.floor(totalHours / 24); }
-                if (document.activeElement !== s4_d_h_hours) { s4_d_h_hours.value = totalHours % 24; }
-                isUpdating = false;
-            }
-            s4_d_h_days.addEventListener('input', updateDHFromCompound);
-            s4_d_h_hours.addEventListener('input', updateDHFromCompound);
-            s4_d_h_total_hours.addEventListener('input', updateDHFromTotal);
-
-
-            function updateMWFromCompound() {
-                if (isUpdating) return; isUpdating = true;
-                let months = parseInt(s4_m_w_months.value) || 0, weeks = parseInt(s4_m_w_weeks.value) || 0;
-                if (weeks > 4) { s4_m_w_weeks.classList.add('input-error'); s4_m_w_weeks_warning.textContent = "ਹਫਤੇ 4 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
-                else { s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = ""; }
-                if (document.activeElement !== s4_m_w_total_weeks) { s4_m_w_total_weeks.value = (months * 4) + weeks; }
-                isUpdating = false;
-            }
-            function updateMWFromTotal() {
-                if (isUpdating) return; isUpdating = true;
-                s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = "";
-                const totalWeeks = parseInt(s4_m_w_total_weeks.value) || 0;
-                if (document.activeElement !== s4_m_w_months) { s4_m_w_months.value = Math.floor(totalWeeks / 4); }
-                if (document.activeElement !== s4_m_w_weeks) { s4_m_w_weeks.value = totalWeeks % 4; }
-                isUpdating = false;
-            }
-            s4_m_w_months.addEventListener('input', updateMWFromCompound);
-            s4_m_w_weeks.addEventListener('input', updateMWFromCompound);
-            s4_m_w_total_weeks.addEventListener('input', updateMWFromTotal);
-
-
-            function updateYMFromCompound() {
-                if (isUpdating) return; isUpdating = true;
-                let years = parseInt(s4_y_m_years.value) || 0, months = parseInt(s4_y_m_months.value) || 0;
-                if (months > 12) { s4_y_m_months.classList.add('input-error'); s4_y_m_months_warning.textContent = "ਮਹੀਨੇ 12 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋ ਸਕਦੇ"; } 
-                else { s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = ""; }
-                if (document.activeElement !== s4_y_m_total_months) { s4_y_m_total_months.value = (years * 12) + months; }
-                isUpdating = false;
-            }
-            function updateYMFromTotal() {
-                if (isUpdating) return; isUpdating = true;
-                s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = "";
-                const totalMonths = parseInt(s4_y_m_total_months.value) || 0;
-                if (document.activeElement !== s4_y_m_years) { s4_y_m_years.value = Math.floor(totalMonths / 12); }
-                if (document.activeElement !== s4_y_m_months) { s4_y_m_months.value = totalMonths % 12; }
-                isUpdating = false;
-            }
-            s4_y_m_years.addEventListener('input', updateYMFromCompound);
-            s4_y_m_months.addEventListener('input', updateYMFromCompound);
-            s4_y_m_total_months.addEventListener('input', updateYMFromTotal);
-
-
-            reset4_btn.addEventListener('click', () => {
-                isUpdating = true; 
-                s4_h_m_hours.value = ''; s4_h_m_minutes.value = ''; s4_h_m_total_minutes.value = '';
-                s4_d_h_days.value = ''; s4_d_h_hours.value = ''; s4_d_h_total_hours.value = '';
-                s4_m_w_months.value = ''; s4_m_w_weeks.value = ''; s4_m_w_total_weeks.value = '';
-                s4_y_m_years.value = ''; s4_y_m_months.value = ''; s4_y_m_total_months.value = '';
                 
-                s4_h_m_minutes.classList.remove('input-error'); s4_h_m_minutes_warning.textContent = "";
-                s4_d_h_hours.classList.remove('input-error'); s4_d_h_hours_warning.textContent = "";
-                s4_m_w_weeks.classList.remove('input-error'); s4_m_w_weeks_warning.textContent = "";
-                s4_y_m_months.classList.remove('input-error'); s4_y_m_months_warning.textContent = "";
-                isUpdating = false; 
+                let start = dt1 < dt2 ? dt1 : dt2, end = dt1 > dt2 ? dt1 : dt2;
+                
+                let y = end.getFullYear() - start.getFullYear();
+                let m = end.getMonth() - start.getMonth();
+                let d = end.getDate() - start.getDate();
+                let h = end.getHours() - start.getHours();
+                let min = end.getMinutes() - start.getMinutes();
+                
+                if (min < 0) { h--; min += 60; }
+                if (h < 0) { d--; h += 24; }
+                if (d < 0) { m--; d += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate(); }
+                if (m < 0) { y--; m += 12; }
+
+                document.getElementById('result3-text').innerHTML = `ਅੰਤਰ: ${y} ਸਾਲ, ${m} ਮਹੀਨੇ, ${d} ਦਿਨ <br> ${h} ਘੰਟੇ ਅਤੇ ${min} ਮਿੰਟ`;
+                document.getElementById('result3-total').textContent = `ਕੁੱਲ ਘੰਟੇ: ${Math.abs((dt2 - dt1) / 3600000).toFixed(1)}`;
+                document.getElementById('output-box3').classList.remove('hidden');
             });
+
+            // Section 4 Converter Logic
+            const setupSync = (main, sub, fact) => {
+                main.addEventListener('input', () => {
+                    let v = parseInt(main.value) || 0;
+                    sub[0].value = Math.floor(v / fact); sub[1].value = v % fact;
+                });
+                sub.forEach(i => i.addEventListener('input', () => {
+                    main.value = (parseInt(sub[0].value) || 0) * fact + (parseInt(sub[1].value) || 0);
+                }));
+            };
+            setupSync(document.getElementById('s4_h_m_total'), [document.getElementById('s4_h_m_h'), document.getElementById('s4_h_m_m')], 60);
+            setupSync(document.getElementById('s4_d_h_total'), [document.getElementById('s4_d_h_d'), document.getElementById('s4_d_h_h')], 24);
+            setupSync(document.getElementById('s4_m_w_total'), [document.getElementById('s4_m_w_m'), document.getElementById('s4_m_w_w')], 4);
+            setupSync(document.getElementById('s4_y_m_total'), [document.getElementById('s4_y_m_y'), document.getElementById('s4_y_m_mo')], 12);
+
+            // Section 5 Logic
+            document.getElementById('calc5').addEventListener('click', () => {
+                let now = new Date();
+                let baseD = parseDate(document.getElementById('s5-date').value) || now;
+                let baseT = parseTime(document.getElementById('s5-time').value) || (document.getElementById('s5-date').value === "" ? {h: now.getHours(), m: now.getMinutes()} : {h:0, m:0});
+                let f = new Date(baseD.getFullYear(), baseD.getMonth(), baseD.getDate(), baseT.h, baseT.m);
+                f.setFullYear(f.getFullYear() + (parseInt(document.getElementById('s5-add-y').value) || 0));
+                f.setMonth(f.getMonth() + (parseInt(document.getElementById('s5-add-m').value) || 0));
+                f.setDate(f.getDate() + (parseInt(document.getElementById('s5-add-d').value) || 0));
+                f.setHours(f.getHours() + (parseInt(document.getElementById('s5-add-h').value) || 0));
+                f.setMinutes(f.getMinutes() + (parseInt(document.getElementById('s5-add-min').value) || 0));
+                document.getElementById('result5').innerHTML = `ਤਰੀਕ: ${pad(f.getDate())}-${pad(f.getMonth()+1)}-${f.getFullYear()}<br>ਸਮਾਂ: ${pad(f.getHours())}:${pad(f.getMinutes())}`;
+                document.getElementById('output-box5').classList.remove('hidden');
+            });
+
+            // Resets
+            document.querySelectorAll('.btn-reset').forEach(b => b.addEventListener('click', e => {
+                const s = e.target.closest('section');
+                s.querySelectorAll('input').forEach(i => i.value = '');
+                if (s.querySelector('.output-box')) s.querySelector('.output-box').classList.add('hidden');
+            }));
         });
     </script>
 </body>
 </html>
+
