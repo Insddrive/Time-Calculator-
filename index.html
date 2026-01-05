@@ -7,7 +7,7 @@
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2921/2921222.png">
 
     <style>
         :root {
@@ -88,7 +88,7 @@
             border-radius: 0.75rem;
             font-size: 1rem;
             outline: none;
-            height: 2.8rem;
+            height: 3rem;
         }
 
         input:focus { border-color: var(--text-white); }
@@ -116,19 +116,18 @@
         .result-text { font-family: 'Courier New', monospace; font-size: 1.05rem; color: #f3f4f6; line-height: 1.5; }
         .result-highlight { color: var(--green-primary); font-weight: bold; }
 
-        .date-wrapper { position: relative; width: 100%; }
+        .date-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
         .calendar-trigger {
-            position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
-            pointer-events: none; font-size: 1rem;
+            position: absolute; right: 0.7rem; cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
         }
         .native-date-picker {
-            position: absolute; right: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+            position: absolute; right: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;
         }
-        .arrow-icon { font-size: 1rem; color: #6b7280; text-align: center; padding-bottom: 0.85rem; }
 
         @media (max-width: 400px) {
             h2 { font-size: 1.1rem; }
-            input { padding: 0.5rem; font-size: 0.9rem; height: 2.5rem; }
+            input { padding: 0.5rem; font-size: 0.9rem; height: 2.7rem; }
             label { font-size: 0.75rem; }
         }
     </style>
@@ -142,17 +141,15 @@
                 <div class="grid-item">
                     <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input> 
-                        <span class="calendar-trigger">📅</span>
-                        <input type="date" class="native-date-picker" data-target="s1-date1">
+                        <input type="text" id="s1-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input data-strict> 
+                        <div class="calendar-trigger">📅<input type="date" class="native-date-picker" data-target="s1-date1"></div>
                     </div>
                 </div>
                 <div class="grid-item">
                     <label>ਅੰਤਿਮ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
-                        <span class="calendar-trigger">📅</span>
-                        <input type="date" class="native-date-picker" data-target="s1-date2">
+                        <input type="text" id="s1-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input data-strict>
+                        <div class="calendar-trigger">📅<input type="date" class="native-date-picker" data-target="s1-date2"></div>
                     </div>
                 </div>
             </div>
@@ -177,25 +174,23 @@
             </div>
         </section>
 
-        <!-- S3: ਕੁੱਲ ਅੰਤਰ (Y/M/D/H/M Fixed) -->
+        <!-- S3: ਕੁੱਲ ਅੰਤਰ -->
         <section class="border-blue">
             <h2 class="text-blue">ਸੈਕਸ਼ਨ 3: ਕੁੱਲ ਅੰਤਰ</h2>
             <div class="grid-2">
                 <div class="grid-item">
                     <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
-                        <span class="calendar-trigger">📅</span>
-                        <input type="date" class="native-date-picker" data-target="s3-date1">
+                        <input type="text" id="s3-date1" placeholder="DD-MM-YYYY" inputmode="tel" data-input data-strict>
+                        <div class="calendar-trigger">📅<input type="date" class="native-date-picker" data-target="s3-date1"></div>
                     </div>
                 </div>
                 <div class="grid-item"><label>ਸ਼ੁਰੁਆਤੀ ਸਮਾਂ</label><input type="time" id="s3-time1"></div>
                 <div class="grid-item">
                     <label>ਅੰਤਿਮ ਤਰੀਕ</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input>
-                        <span class="calendar-trigger">📅</span>
-                        <input type="date" class="native-date-picker" data-target="s3-date2">
+                        <input type="text" id="s3-date2" placeholder="DD-MM-YYYY" inputmode="tel" data-input data-strict>
+                        <div class="calendar-trigger">📅<input type="date" class="native-date-picker" data-target="s3-date2"></div>
                     </div>
                 </div>
                 <div class="grid-item"><label>ਅੰਤਿਮ ਸਮਾਂ</label><input type="time" id="s3-time2"></div>
@@ -213,25 +208,25 @@
             <h2 class="text-white">ਸੈਕਸ਼ਨ 4: ਯੂਨਿਟ ਕਨਵਰਟਰ</h2>
             <div class="grid-5">
                 <div class="grid-item"><label>ਕੁੱਲ ਮਿੰਟ</label><input type="number" id="s4_h_m_total" placeholder="0"></div>
-                <div class="arrow-icon">⇄</div>
+                <div style="font-size:1.2rem; text-align:center; padding-bottom:0.7rem;">⇄</div>
                 <div class="grid-item"><label>ਘੰਟੇ</label><input type="number" id="s4_h_m_h" placeholder="0"></div>
                 <div class="grid-item"><label>ਮਿੰਟ</label><input type="number" id="s4_h_m_m" placeholder="0"></div>
             </div>
             <div class="grid-5">
                 <div class="grid-item"><label>ਕੁੱਲ ਘੰਟੇ</label><input type="number" id="s4_d_h_total" placeholder="0"></div>
-                <div class="arrow-icon">⇄</div>
+                <div style="font-size:1.2rem; text-align:center; padding-bottom:0.7rem;">⇄</div>
                 <div class="grid-item"><label>ਦਿਨ</label><input type="number" id="s4_d_h_d" placeholder="0"></div>
                 <div class="grid-item"><label>ਘੰਟੇ</label><input type="number" id="s4_d_h_h" placeholder="0"></div>
             </div>
             <div class="grid-5">
                 <div class="grid-item"><label>ਕੁੱਲ ਹਫਤੇ</label><input type="number" id="s4_m_w_total" placeholder="0"></div>
-                <div class="arrow-icon">⇄</div>
+                <div style="font-size:1.2rem; text-align:center; padding-bottom:0.7rem;">⇄</div>
                 <div class="grid-item"><label>ਮਹੀਨੇ</label><input type="number" id="s4_m_w_m" placeholder="0"></div>
                 <div class="grid-item"><label>ਹਫਤੇ</label><input type="number" id="s4_m_w_w" placeholder="0"></div>
             </div>
             <div class="grid-5">
                 <div class="grid-item"><label>ਕੁੱਲ ਮਹੀਨੇ</label><input type="number" id="s4_y_m_total" placeholder="0"></div>
-                <div class="arrow-icon">⇄</div>
+                <div style="font-size:1.2rem; text-align:center; padding-bottom:0.7rem;">⇄</div>
                 <div class="grid-item"><label>ਸਾਲ</label><input type="number" id="s4_y_m_y" placeholder="0"></div>
                 <div class="grid-item"><label>ਮਹੀਨੇ</label><input type="number" id="s4_y_m_mo" placeholder="0"></div>
             </div>
@@ -245,9 +240,8 @@
                 <div class="grid-item">
                     <label>ਸ਼ੁਰੁਆਤੀ ਤਰੀਕ (ਖਾਲੀ=ਅੱਜ)</label>
                     <div class="date-wrapper">
-                        <input type="text" id="s5-date" placeholder="DD-MM-YYYY" inputmode="tel" class="input-orange" data-input>
-                        <span class="calendar-trigger">📅</span>
-                        <input type="date" class="native-date-picker" data-target="s5-date">
+                        <input type="text" id="s5-date" placeholder="DD-MM-YYYY" inputmode="tel" class="input-orange" data-input data-strict>
+                        <div class="calendar-trigger">📅<input type="date" class="native-date-picker" data-target="s5-date"></div>
                     </div>
                 </div>
                 <div class="grid-item">
@@ -273,38 +267,65 @@
     </main>
 
     <script>
+        // --- Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Failed', err));
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const pad = n => n.toString().padStart(2, '0');
 
-            // Robust Input Mask
+            // --- Strict Date Typing Logic ---
             document.querySelectorAll('input[data-input]').forEach(input => {
-                input.addEventListener('keydown', e => { input._valBefore = input.value; });
                 input.addEventListener('input', () => {
                     let v = input.value.replace(/[^\d]/g, '');
-                    if (input._valBefore && input.value.length < input._valBefore.length) return;
-                    let f = '';
-                    if (v.length > 0) {
-                        f += v.substring(0, 2);
-                        if (v.length > 2) f += '-' + v.substring(2, 4);
-                        if (v.length > 4) f += '-' + v.substring(4, 8);
+                    const isStrict = input.hasAttribute('data-strict');
+                    
+                    let day = v.substring(0, 2);
+                    let month = v.substring(2, 4);
+                    let year = v.substring(4, 8);
+
+                    if (isStrict) {
+                        if (month.length === 2) {
+                            let mNum = parseInt(month);
+                            if (mNum > 12) month = '12';
+                            if (mNum === 0 && month !== '') month = '01';
+                        }
+                        if (day.length === 2) {
+                            let dNum = parseInt(day);
+                            let mNum = parseInt(month) || 0;
+                            let maxDays = 31;
+                            if (mNum === 2) maxDays = 29;
+                            else if ([4, 6, 9, 11].includes(mNum)) maxDays = 30;
+                            if (dNum > maxDays) day = maxDays.toString();
+                            if (dNum === 0 && day !== '') day = '01';
+                        }
                     }
+
+                    let f = day;
+                    if (v.length > 2) f += '-' + month;
+                    if (v.length > 4) f += '-' + year;
                     input.value = f;
                 });
             });
 
-            // Native Date Picker Sync
+            // Native Picker Sync
             document.querySelectorAll('.native-date-picker').forEach(p => {
                 p.addEventListener('change', e => {
                     const t = document.getElementById(e.target.dataset.target);
                     const pts = e.target.value.split('-');
                     if (pts.length === 3) {
                         t.value = `${pts[2]}-${pts[1]}-${pts[0]}`;
-                        t.classList.remove('error');
+                        t.dispatchEvent(new Event('input'));
                     }
                 });
             });
 
-            // Helpers
+            // Parsing Helpers
             const parseDate = s => {
                 if (!s || s.length < 10) return null;
                 const p = s.split('-').map(Number);
@@ -313,10 +334,10 @@
             };
             const parseTime = s => s ? { h: parseInt(s.split(':')[0]), m: parseInt(s.split(':')[1]) } : null;
 
-            // Section 1 Logic
+            // Section Logic
             document.getElementById('calc1').addEventListener('click', () => {
-                const i1 = document.getElementById('s1-date1'), i2 = document.getElementById('s1-date2');
-                const d1 = parseDate(i1.value), d2 = parseDate(i2.value);
+                const d1 = parseDate(document.getElementById('s1-date1').value);
+                const d2 = parseDate(document.getElementById('s1-date2').value);
                 if (!d1 || !d2) return;
                 let start = d1 < d2 ? d1 : d2, end = d1 > d2 ? d1 : d2;
                 let y = end.getFullYear() - start.getFullYear(), m = end.getMonth() - start.getMonth(), d = end.getDate() - start.getDate();
@@ -326,7 +347,6 @@
                 document.getElementById('output-box1').classList.remove('hidden');
             });
 
-            // Section 2 Logic
             document.getElementById('calc2').addEventListener('click', () => {
                 const t1 = parseTime(document.getElementById('s2-time1').value), t2 = parseTime(document.getElementById('s2-time2').value);
                 if (!t1 || !t2) return;
@@ -335,36 +355,25 @@
                 document.getElementById('output-box2').classList.remove('hidden');
             });
 
-            // Section 3 Logic (Fixed Detailed Output)
             document.getElementById('calc3').addEventListener('click', () => {
                 const d1 = parseDate(document.getElementById('s3-date1').value);
                 const d2 = parseDate(document.getElementById('s3-date2').value);
                 if (!d1 || !d2) return;
                 const t1 = parseTime(document.getElementById('s3-time1').value) || {h:0, m:0};
                 const t2 = parseTime(document.getElementById('s3-time2').value) || {h:0, m:0};
-                
                 const dt1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate(), t1.h, t1.m);
                 const dt2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate(), t2.h, t2.m);
-                
                 let start = dt1 < dt2 ? dt1 : dt2, end = dt1 > dt2 ? dt1 : dt2;
-                
-                let y = end.getFullYear() - start.getFullYear();
-                let m = end.getMonth() - start.getMonth();
-                let d = end.getDate() - start.getDate();
-                let h = end.getHours() - start.getHours();
-                let min = end.getMinutes() - start.getMinutes();
-                
+                let y = end.getFullYear() - start.getFullYear(), m = end.getMonth() - start.getMonth(), d = end.getDate() - start.getDate(), h = end.getHours() - start.getHours(), min = end.getMinutes() - start.getMinutes();
                 if (min < 0) { h--; min += 60; }
                 if (h < 0) { d--; h += 24; }
                 if (d < 0) { m--; d += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate(); }
                 if (m < 0) { y--; m += 12; }
-
                 document.getElementById('result3-text').innerHTML = `ਅੰਤਰ: ${y} ਸਾਲ, ${m} ਮਹੀਨੇ, ${d} ਦਿਨ <br> ${h} ਘੰਟੇ ਅਤੇ ${min} ਮਿੰਟ`;
                 document.getElementById('result3-total').textContent = `ਕੁੱਲ ਘੰਟੇ: ${Math.abs((dt2 - dt1) / 3600000).toFixed(1)}`;
                 document.getElementById('output-box3').classList.remove('hidden');
             });
 
-            // Section 4 Converter Logic
             const setupSync = (main, sub, fact) => {
                 main.addEventListener('input', () => {
                     let v = parseInt(main.value) || 0;
@@ -379,7 +388,6 @@
             setupSync(document.getElementById('s4_m_w_total'), [document.getElementById('s4_m_w_m'), document.getElementById('s4_m_w_w')], 4);
             setupSync(document.getElementById('s4_y_m_total'), [document.getElementById('s4_y_m_y'), document.getElementById('s4_y_m_mo')], 12);
 
-            // Section 5 Logic
             document.getElementById('calc5').addEventListener('click', () => {
                 let now = new Date();
                 let baseD = parseDate(document.getElementById('s5-date').value) || now;
@@ -394,7 +402,6 @@
                 document.getElementById('output-box5').classList.remove('hidden');
             });
 
-            // Resets
             document.querySelectorAll('.btn-reset').forEach(b => b.addEventListener('click', e => {
                 const s = e.target.closest('section');
                 s.querySelectorAll('input').forEach(i => i.value = '');
