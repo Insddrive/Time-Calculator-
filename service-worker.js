@@ -1,20 +1,41 @@
-﻿const CACHE_NAME = 'time-calc-v1';
-const urlsToCache = [
- './',
- './index.html',
- './manifest.json'
+const CACHE_NAME = 'time-calculator-v2';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  'https://cdn-icons-png.flaticon.com/512/2921/2921222.png'
 ];
 
+// ਇੰਸਟਾਲੇਸ਼ਨ ਦੌਰਾਨ ਫਾਈਲਾਂ ਸੇਵ ਕਰੋ
 self.addEventListener('install', event => {
- event.waitUntil(
-   caches.open(CACHE_NAME)
-     .then(cache => cache.addAll(urlsToCache))
- );
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        return cache.addAll(ASSETS);
+      })
+      .then(() => self.skipWaiting())
+  );
 });
 
+// ਪੁਰਾਣੇ ਕੈਸ਼ ਨੂੰ ਹਟਾਓ
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      );
+    })
+  );
+});
+
+// ਆਫਲਾਈਨ ਕੰਮ ਕਰਨ ਲਈ ਫੈਚ ਲੋਜਿਕ
 self.addEventListener('fetch', event => {
- event.respondWith(
-   caches.match(event.request)
-     .then(response => response || fetch(event.request))
- );
+  event.respondWith(
+    caches.match(event.request)
+      .then(cachedResponse => {
+        // ਜੇ ਕੈਸ਼ ਵਿੱਚ ਹੈ ਤਾਂ ਉਹ ਦਿਓ, ਨਹੀਂ ਤਾਂ ਨੈੱਟਵਰਕ ਤੋਂ ਲਓ
+        return cachedResponse || fetch(event.request);
+      })
+  );
 });
