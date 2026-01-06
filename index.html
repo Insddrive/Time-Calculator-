@@ -198,7 +198,7 @@
             <button id="calc3" class="btn btn-blue">ਗਣਨਾ ਕਰੋ</button>
             <div id="output-box3" class="output-box hidden">
                 <p id="result3-text" class="result-text"></p>
-                <p id="result3-total" class="result-text" style="color: var(--blue-primary); font-size: 0.9rem; margin-top: 5px;"></p>
+                <p id="result3-total" class="result-text" style="color: var(--blue-primary); font-size: 1.1rem; font-weight: bold; margin-top: 8px;"></p>
                 <button id="reset3" class="btn btn-reset">ਰੀਸੈੱਟ</button>
             </div>
         </section>
@@ -267,19 +267,10 @@
     </main>
 
     <script>
-        // --- Service Worker Registration ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('SW Registered'))
-                    .catch(err => console.log('SW Failed', err));
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const pad = n => n.toString().padStart(2, '0');
 
-            // --- Strict Date Typing Logic ---
+            // --- Date Masking Logic ---
             document.querySelectorAll('input[data-input]').forEach(input => {
                 input.addEventListener('input', () => {
                     let v = input.value.replace(/[^\d]/g, '');
@@ -334,7 +325,7 @@
             };
             const parseTime = s => s ? { h: parseInt(s.split(':')[0]), m: parseInt(s.split(':')[1]) } : null;
 
-            // Section Logic
+            // Section 1: Date Difference
             document.getElementById('calc1').addEventListener('click', () => {
                 const d1 = parseDate(document.getElementById('s1-date1').value);
                 const d2 = parseDate(document.getElementById('s1-date2').value);
@@ -347,6 +338,7 @@
                 document.getElementById('output-box1').classList.remove('hidden');
             });
 
+            // Section 2: Time Difference
             document.getElementById('calc2').addEventListener('click', () => {
                 const t1 = parseTime(document.getElementById('s2-time1').value), t2 = parseTime(document.getElementById('s2-time2').value);
                 if (!t1 || !t2) return;
@@ -355,6 +347,7 @@
                 document.getElementById('output-box2').classList.remove('hidden');
             });
 
+            // Section 3: Total Difference (Updated as per request)
             document.getElementById('calc3').addEventListener('click', () => {
                 const d1 = parseDate(document.getElementById('s3-date1').value);
                 const d2 = parseDate(document.getElementById('s3-date2').value);
@@ -363,17 +356,27 @@
                 const t2 = parseTime(document.getElementById('s3-time2').value) || {h:0, m:0};
                 const dt1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate(), t1.h, t1.m);
                 const dt2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate(), t2.h, t2.m);
+                
                 let start = dt1 < dt2 ? dt1 : dt2, end = dt1 > dt2 ? dt1 : dt2;
+                
+                // Detailed breakdown
                 let y = end.getFullYear() - start.getFullYear(), m = end.getMonth() - start.getMonth(), d = end.getDate() - start.getDate(), h = end.getHours() - start.getHours(), min = end.getMinutes() - start.getMinutes();
                 if (min < 0) { h--; min += 60; }
                 if (h < 0) { d--; h += 24; }
                 if (d < 0) { m--; d += new Date(start.getFullYear(), start.getMonth() + 1, 0).getDate(); }
                 if (m < 0) { y--; m += 12; }
                 document.getElementById('result3-text').innerHTML = `ਅੰਤਰ: ${y} ਸਾਲ, ${m} ਮਹੀਨੇ, ${d} ਦਿਨ <br> ${h} ਘੰਟੇ ਅਤੇ ${min} ਮਿੰਟ`;
-                document.getElementById('result3-total').textContent = `ਕੁੱਲ ਘੰਟੇ: ${Math.abs((dt2 - dt1) / 3600000).toFixed(1)}`;
+                
+                // Total hours and minutes calculation (REPLACED DECIMAL LOGIC)
+                let totalMs = Math.abs(dt2 - dt1);
+                let totalHours = Math.floor(totalMs / 3600000);
+                let totalMinutes = Math.floor((totalMs % 3600000) / 60000);
+                
+                document.getElementById('result3-total').textContent = `ਕੁੱਲ: ${totalHours} ਘੰਟੇ ਅਤੇ ${totalMinutes} ਮਿੰਟ`;
                 document.getElementById('output-box3').classList.remove('hidden');
             });
 
+            // Section 4: Converter Logic
             const setupSync = (main, sub, fact) => {
                 main.addEventListener('input', () => {
                     let v = parseInt(main.value) || 0;
@@ -388,6 +391,7 @@
             setupSync(document.getElementById('s4_m_w_total'), [document.getElementById('s4_m_w_m'), document.getElementById('s4_m_w_w')], 4);
             setupSync(document.getElementById('s4_y_m_total'), [document.getElementById('s4_y_m_y'), document.getElementById('s4_y_m_mo')], 12);
 
+            // Section 5: Add time
             document.getElementById('calc5').addEventListener('click', () => {
                 let now = new Date();
                 let baseD = parseDate(document.getElementById('s5-date').value) || now;
@@ -402,6 +406,7 @@
                 document.getElementById('output-box5').classList.remove('hidden');
             });
 
+            // Reset Logic
             document.querySelectorAll('.btn-reset').forEach(b => b.addEventListener('click', e => {
                 const s = e.target.closest('section');
                 s.querySelectorAll('input').forEach(i => i.value = '');
