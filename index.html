@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ਟਾਈਮ ਕੈਲਕੁਲੇਟਰ</title>
+    <title>Time Calculator</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2921/2921222.png">
+    <!-- ਲੋਗੋ ਹੁਣ ਲੋਕਲ ਫਾਈਲ 'logo.png' ਤੋਂ ਚੁੱਕਿਆ ਜਾਵੇਗਾ -->
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
 
     <style>
         :root {
@@ -347,7 +349,7 @@
                 document.getElementById('output-box2').classList.remove('hidden');
             });
 
-            // Section 3: Total Difference (Updated as per request)
+            // Section 3: Total Difference
             document.getElementById('calc3').addEventListener('click', () => {
                 const d1 = parseDate(document.getElementById('s3-date1').value);
                 const d2 = parseDate(document.getElementById('s3-date2').value);
@@ -367,7 +369,7 @@
                 if (m < 0) { y--; m += 12; }
                 document.getElementById('result3-text').innerHTML = `ਅੰਤਰ: ${y} ਸਾਲ, ${m} ਮਹੀਨੇ, ${d} ਦਿਨ <br> ${h} ਘੰਟੇ ਅਤੇ ${min} ਮਿੰਟ`;
                 
-                // Total hours and minutes calculation (REPLACED DECIMAL LOGIC)
+                // Total hours and minutes
                 let totalMs = Math.abs(dt2 - dt1);
                 let totalHours = Math.floor(totalMs / 3600000);
                 let totalMinutes = Math.floor((totalMs % 3600000) / 60000);
@@ -413,6 +415,19 @@
                 if (s.querySelector('.output-box')) s.querySelector('.output-box').classList.add('hidden');
             }));
         });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
