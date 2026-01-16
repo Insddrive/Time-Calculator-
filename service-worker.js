@@ -1,9 +1,9 @@
-const CACHE_NAME = 'time-calculator-v2';
+const CACHE_NAME = 'time-calculator-v3';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  'https://cdn-icons-png.flaticon.com/512/2921/2921222.png'
+  './logo.png'
 ];
 
 // ਇੰਸਟਾਲੇਸ਼ਨ ਦੌਰਾਨ ਫਾਈਲਾਂ ਸੇਵ ਕਰੋ
